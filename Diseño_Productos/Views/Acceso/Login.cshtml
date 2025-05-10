@@ -1,18 +1,60 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
 <!DOCTYPE html>
 
-<html>
+<html lang="es">
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Login</title>
+    <meta charset="utf-8" />
+    <title>Inicio de Sesión</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div> 
-        <h1>LOGIN </h1>
-    </div>
+    <!-- Sección de Login centrada -->
+    <section class="d-flex align-items-center justify-content-center min-vh-100 p-3 p-md-4 p-xl-5" style="background-image: url('@Url.Content("~/Content/images/class_wallpaper.webp")')">
+        <div class="container">
+            <img src="@Url.Content("~/Content/class_wallpaper.webp")" alt="Alternate Text" />
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 shadow rounded">
+                    <div class="row">
+                        <div class="col-12 col-md-6 bg-light text-center">
+                            <div class="d-flex flex-column justify-content-center align-items-center h-100 p-4">
+                                <img class="img-fluid rounded" loading="lazy" src="~/images/logo.svg" width="245" height="80" alt="Logo">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 bg-white">
+                            <div class="p-4">
+                                <h3 class="mb-4">Iniciar sesión</h3>
+                                <form action="#!">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="nombre@ejemplo.com" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" name="password" id="password" required>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                                        <label class="form-check-label" for="remember_me">Mantener sesión iniciada</label>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Iniciar ahora</button>
+                                    </div>
+                                </form>
+                                <hr class="mt-4 mb-3" />
+                                <div class="text-end">
+                                    <a href="#!" class="link-secondary text-decoration-none">¿Olvidaste tu contraseña?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
