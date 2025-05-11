@@ -18,3 +18,16 @@ select,
 textarea {
     max-width: 280px;
 }
+.captura {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh; /* Esto asegura que cubra toda la altura del viewport */
+    color: white;
+}
+h3{
+    color:red;
+}

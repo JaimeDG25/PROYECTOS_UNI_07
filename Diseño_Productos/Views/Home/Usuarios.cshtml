@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Usuarios</h2>
+@section scripts{
+    <script>
+        console.log("hola mundo")
+        jQuery.ajax({
+            url: '@Url.Action("ListarUsuarios", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                // Carga los datos manualmente si es necesario
+                console.log("Todos los datos que tengo recolectados");
+                console.log(datos);
+            }
+        });
+    </script>
+}
