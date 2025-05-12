@@ -1,0 +1,10 @@
+﻿.captura {
+    background: linear-gradient(to right, #800000, #FF69B4);
+}
+body {
+    min-height: 100vh; /* Asegura que el body ocupe al menos el 100% de la altura de la ventana */
+    margin: 0; /* Elimina los márgenes predeterminados del body */
+}
+h3{
+    color:black;
+}

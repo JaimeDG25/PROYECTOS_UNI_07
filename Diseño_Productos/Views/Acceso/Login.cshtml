@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Acceso";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <title>Inicio de Sesión</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/estilos.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/complementos")
+</head>
+<body class="captura">
+    <!-- Sección de Login centrada -->
+    <section class="d-flex align-items-center justify-content-center min-vh-100 p-3 p-md-4 p-xl-5" style="background-image: url('@Url.Content("~/Content/images/class_wallpaper.webp")')">
+        <div class="container">
+            <img src="@Url.Content("~/Content/images/utp.jpeg")" alt="" />
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 shadow rounded">
+                    <div class="row">
+                        <div class="col-12 col-md-6 bg-light text-center">
+                            <div class="d-flex flex-column justify-content-center align-items-center h-100 p-4">
+                                @*<img src="~/Content/images/logo.jpeg" alt="Logo" class="img-fluid rounded" loading="lazy">*@
+                                <img src="~/Content/images/logo_login.jpeg" alt="Logo" width="280" height="310">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 bg-white">
+                            <div class="p-4">
+                                <h2 class="mb-4">Iniciar sesión</h2>
+                                @*<i class="fas fa-users me-1"></i>*@
+                                <form action="#!">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="nombre@ejemplo.com" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="testpassword" required>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                                        <label class="form-check-label" for="remember_me">Mantener sesión iniciada</label>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Iniciar ahora</button>
+                                    </div>
+                                </form>
+                                <hr class="mt-4 mb-3" />
+                                <div class="text-end">
+                                    <a href="#!" class="link-secondary text-decoration-none">¿Olvidaste tu contraseña?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
