@@ -23,11 +23,10 @@ namespace CapaDatos
                 {
                     oconexion.Open(); //Abriendo la conexion
                     Console.WriteLine("Conexión exitosa a la base de datos.");
-                    //String query1 = "SELECT Id_Usuario, Nombre_Usuario, Apellido_Usuario, Correo_electronico_Usuario, Clave, Rol_Id FROM usuarios";
                     //Aqui estamos creando una consulta para acceder tanto a los atributos de usuarios como a los de roles
                     String query = @"SELECT u.Id_Usuario, u.Nombre_Usuario, u.Apellido_Usuario, 
                                             u.Correo_electronico_Usuario, u.Clave, 
-                                            r.Id_Rol, r.Roles_Descripcion
+                                            r.Id_Rol, r.Roles_Descripcion, u.Activo
                                      FROM usuarios u
                                      INNER JOIN roles r ON u.Rol_Id = r.Id_Rol";
                     
@@ -49,10 +48,13 @@ namespace CapaDatos
                                     Apellido_Usuario = reader["Apellido_Usuario"].ToString(),
                                     Correo_electronico_Usuario = reader["Correo_electronico_Usuario"].ToString(),
                                     Clave = reader["Clave"].ToString(),
-                                    Rol_Id = new Roles //aqui estamos trallendo lo que esta dentro de roles por eso hicimos la consulta con inner
+                                    Activo = Convert.ToBoolean(reader["Activo"]),
+                                    //aqui estamos trallendo lo que esta dentro de roles por eso hicimos la consulta con inner
+                                    Rol_Id_D = new Roles 
+                                    Rol_Id_D = new Roles 
                                     {
-                                        Id_Rol = Convert.ToInt32(reader["Id_Rol"]),
-                                        Rol_Descripcion = reader["Roles_Descripcion"].ToString()
+                                        Id_Rol = Convert.ToInt32(reader["id_rol"]),
+                                        Rol_Descripcion = reader["roles_descripcion"].ToString()
                                     }
                                 }
                             );
@@ -80,5 +82,39 @@ namespace CapaDatos
         }
 
         //ESTA FUNCION SERVIRA PARA AGREGAR USUARIOS (SIENDO EL ADMINISTRADOR)
+        public int Registrar(Usuarios obj, out string mensaje_registrar)
+        {
+            int idautogenerado = 0;
+            mensaje_registrar = string.Empty;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", oconexion);
+                    cmd.Parameters.AddWithValue("Nombre_Usuario", obj.Nombre_Usuario);
+                    cmd.Parameters.AddWithValue("Apellido_Usuario", obj.Apellido_Usuario);
+                    cmd.Parameters.AddWithValue("Correo_electronico_Usuario", obj.Correo_electronico_Usuario);
+                    cmd.Parameters.AddWithValue("Rol_Id", obj.Rol_Id);
+                    cmd.Parameters.AddWithValue("Clave", obj.Clave);
+                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oconexion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    mensaje_registrar = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                idautogenerado = 0;
+                mensaje_registrar = ex.Message;
+            }
+            return idautogenerado;
+        }
     }
 }

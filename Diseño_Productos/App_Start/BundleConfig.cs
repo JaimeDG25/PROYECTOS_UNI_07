@@ -20,16 +20,10 @@ namespace Diseño_Productos
                         "~/Scripts/jquery-ui-1.14.1.js",
                         "~/Scripts/scripts.js"));
 
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-            //            "~/Scripts/jquery.validate*"));
-
             // Utilice la versión de desarrollo de Modernizr para desarrollar y obtener información sobre los formularios.  De esta manera estará
             // para la producción, use la herramienta de compilación disponible en https://modernizr.com para seleccionar solo las pruebas que necesite.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
-
-            //bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-            //          "~/Scripts/bootstrap.js"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js"));
@@ -37,7 +31,12 @@ namespace Diseño_Productos
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css",
-                      "~/Content/fontawesome.min.css"));
+                      "~/Content/DataTables/css/aprobado1.css",
+                      "~/Content/DataTables/css/responsive.dataTables.css",
+                      "~/Content/themes/base/jquery-ui.css",
+                      "~/Content/sweetalert.css",
+                      "~/Content/fontawesome.min.css"
+                      ));
         }
     }
 }

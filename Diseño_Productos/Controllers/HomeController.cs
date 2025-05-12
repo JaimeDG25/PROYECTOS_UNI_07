@@ -32,6 +32,23 @@ namespace Diseño_Productos.Controllers
             }
             return Json(new { jeason_lista=olista,saludo=saludo }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult Guardar(Usuarios registrado) //Ese "registrado" debe ser igual
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (registrado.Id_Usuario == 0)
+            {
+                resultado = new CN_Usuarios().Registrar(registrado, out mensaje);
+            }
+            else
+            {
+                resultado = null;
+                resultado = null;
+                //resultado = new CN_Usuarios().Editar(registrado, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         public ActionResult Cursos()
