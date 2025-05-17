@@ -51,7 +51,6 @@ namespace CapaDatos
                                     Activo = Convert.ToBoolean(reader["Activo"]),
                                     //aqui estamos trallendo lo que esta dentro de roles por eso hicimos la consulta con inner
                                     Rol_Id_D = new Roles 
-                                    Rol_Id_D = new Roles 
                                     {
                                         Id_Rol = Convert.ToInt32(reader["id_rol"]),
                                         Rol_Descripcion = reader["roles_descripcion"].ToString()
@@ -115,6 +114,66 @@ namespace CapaDatos
                 mensaje_registrar = ex.Message;
             }
             return idautogenerado;
+        }
+
+
+        //ESTA FUNCION SERVIRA PARA ELIMINAR USUARIOS
+        public bool Eliminar(int id, out string mensaje_eliminar)
+        {
+            bool resultado = false;
+            mensaje_eliminar = string.Empty;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("delete top (1) from usuarios where Id_Usuario = @id", oconexion);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.CommandType = CommandType.Text;
+                    oconexion.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                mensaje_eliminar = ex.Message;
+            }
+            return resultado;
+        }
+
+        //ESTA FUNCION SERVIRA PARA EDITAR USUARIOS
+        public bool Editar(Usuarios obj, out string mensaje_editar)
+        {
+            bool resultado = false;
+            mensaje_editar = string.Empty;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_EditarUsuario", oconexion);
+                    cmd.Parameters.AddWithValue("Id_Usuario", obj.Id_Usuario);
+                    cmd.Parameters.AddWithValue("Nombre_Usuario", obj.Nombre_Usuario);
+                    cmd.Parameters.AddWithValue("Apellido_Usuario", obj.Apellido_Usuario);
+                    cmd.Parameters.AddWithValue("Correo_electronico_Usuario", obj.Correo_electronico_Usuario);
+                    cmd.Parameters.AddWithValue("Rol_Id", obj.Rol_Id);
+                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    oconexion.Open();
+                    cmd.ExecuteNonQuery();
+
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    mensaje_editar = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                mensaje_editar = ex.Message;
+            }
+            return resultado;
         }
     }
 }

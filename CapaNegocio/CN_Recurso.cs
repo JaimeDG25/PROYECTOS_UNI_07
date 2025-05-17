@@ -51,7 +51,6 @@ namespace CapaNegocio
                     Host = "smtp.gmail.com",
                     Port = 587,
                     EnableSsl = true
-                    EnableSsl = true
                 };
                 smtp.Send(mail);
                 resultado = true;

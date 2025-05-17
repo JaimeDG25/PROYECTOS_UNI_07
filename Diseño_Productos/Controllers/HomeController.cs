@@ -7,6 +7,7 @@ using CapaEntidades;
 using CapaNegocio;
 namespace Diseño_Productos.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -43,11 +44,18 @@ namespace Diseño_Productos.Controllers
             }
             else
             {
-                resultado = null;
-                resultado = null;
-                //resultado = new CN_Usuarios().Editar(registrado, out mensaje);
+                resultado = new CN_Usuarios().Editar(registrado, out mensaje);
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Eliminar_usuario(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+            respuesta = new CN_Usuarios().Eliminar(id, out mensaje);
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
