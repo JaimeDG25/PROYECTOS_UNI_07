@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Cursos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2>Panel Administrativo de Cursos</h2>
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Registros</a></li>
+    <li class="breadcrumb-item active">Cursos</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i>Lista de Cursos
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal()">
+                    Agregar nuevo Curso
+                </button>
+            </div>
+        </div><hr />
+
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Carrera</th>
+                    <th>Curso</th>
+                    <th>Correo</th>
+                    <th>Rol designado</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" onclick="guardares()">ver</button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="forModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Crear usuarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row g-2">
+                    <input id="txtid" type="number" value="0" />
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+                        <input type="text" class="form-control" id="txtnombre" placeholder="Ingresa tus nombres" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="txtapellido" placeholder="Ingresa tus apellidos" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">Correo</label>
+                        <input type="text" class="form-control" id="txtcorreo" placeholder="Ingresa tu correo" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="cboactivo" class="form-label">Activo</label>
+                        <select id="cboactivo" class="form-select">
+                            <option value="1">SIUU</option>
+                            <option value="0">NOUU</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="cbrol" class="form-label">Rol designado</label>
+                        <select id="cborol" class="form-select">
+                            <option value="2">Profesor</option>
+                            <option value="1">Administrador</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div id="mostrarError" class="alert alert-danger" role="alert">
+                        This is a danger alert—check it out!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

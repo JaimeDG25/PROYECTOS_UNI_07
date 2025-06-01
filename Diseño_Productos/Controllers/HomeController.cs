@@ -59,14 +59,30 @@ namespace Diseño_Productos.Controllers
         }
         #endregion
 
+        #region Aca tenemos todo lo que se debe hacer para la tabla Cursos
         public ActionResult Cursos()
         {
             return View();
         }
+        #endregion
 
+        #region Aca tenemos todo lo que se debe hacer para la tabla Usuarios
         public ActionResult Carreras()
         {
             return View();
         }
+        [HttpGet]
+        public JsonResult ListarCarreras()
+        {
+            List<Carreras> olistacarreras = new List<Carreras>();
+            olistacarreras = new CN_Carreras().Listar();
+            string saludo = "Un saludo de agradecimiento";
+            if (olistacarreras == null || !olistacarreras.Any())
+            {
+                return Json("Hola Mundoss", JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { jeason_lista = olistacarreras, saludo = saludo }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

@@ -49,6 +49,14 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Usuarios administrados
                         </a>
+                        <a class="nav-link" href="@Url.Action("Cursos","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Cursos incorporados
+                        </a>
+                        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 nav-link" onclick="abrirModalCarreras()">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Mostrar Carreras
+                        </button>
                         <div class="sb-sidenav-menu-heading">Secciones</div>
                         <a class="nav-link" href="@Url.Action("Index","Acceso")">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -91,10 +99,73 @@
             </footer>
         </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="forModalCarrera" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="exampleModalLabel">Carreras encontradas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <div class="row g-6">
+                        <div class="col-sm-12">
+                            <table id="tablaCarreras" class="display cell-border" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre de la Carrera</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Aquí se insertarán las filas desde JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/complementos")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
 </html>
+<script>
+    console.log("Cargando un scrip desde el layout")
+
+    function abrirModalCarreras() {
+        //CONSULTA AJAX PARA EL METODO LISTAR DE MI CONTROLADOR HOME
+        jQuery.ajax({
+            url: '@Url.Action("ListarCarreras", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                console.log("Datos recibidos:", datos);
+
+                let tbody = $("#tablaCarreras tbody");
+                tbody.empty(); // Limpiar la tabla antes de insertar nuevas filas
+
+                datos.jeason_lista.forEach(function (carrera) {
+                    let fila = `<tr>
+                        <td>${carrera.Id_Carrera}</td>
+                        <td>${carrera.Nombre_Carrera}</td>
+                    </tr>`;
+                    tbody.append(fila);
+                });
+
+                $("#forModalCarrera").modal("show");
+            }
+        });
+        $("#forModalCarrera").modal("show");
+    }
+</script>
+

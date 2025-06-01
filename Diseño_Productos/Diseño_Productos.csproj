@@ -527,6 +527,7 @@
     <Content Include="Scripts\loadingoverlay.min.js.map" />
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\Prueba\Index.cshtml" />
+    <Content Include="Views\Home\Cursos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
