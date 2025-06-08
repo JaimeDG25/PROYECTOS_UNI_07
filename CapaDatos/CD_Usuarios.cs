@@ -5,43 +5,34 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
 using CapaEntidades;
-using System.Data.SqlClient;
 
 namespace CapaDatos
 {
     public class CD_Usuarios
     {
-        //ESTA FUNCION ES PARA LISTA LOS USUARIOS (Y DEMOSTRAR QUE TENEMOS CONEXIN A LA BASE DE DATOS
-        public List<Usuarios> Listar()
-        {
-            List<Usuarios> lista_usuarios = new List<Usuarios>(); //Creando un alista
-            try
-            {
-                using (SqlConnection oconexion = new SqlConnection(Conexion.cn)) //Ejecutando la conexion 
+        #region LISTANDO LOS USUARIOS
+        public List<Usuarios> Listar() {
+
+            List<Usuarios> lista_usuarios = new List<Usuarios>(); 
+            try {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn)) 
                 {
-                    oconexion.Open(); //Abriendo la conexion
+                    oconexion.Open(); 
                     Console.WriteLine("Conexión exitosa a la base de datos.");
-                    //Aqui estamos creando una consulta para acceder tanto a los atributos de usuarios como a los de roles
                     String query = @"SELECT u.Id_Usuario, u.Nombre_Usuario, u.Apellido_Usuario, 
                                             u.Correo_electronico_Usuario, u.Clave, 
                                             r.Id_Rol, r.Roles_Descripcion, u.Activo
                                      FROM usuarios u
                                      INNER JOIN roles r ON u.Rol_Id = r.Id_Rol";
-                    
-                    //Integrando la consulta y abrinedo la conexion 
+ 
                     SqlCommand cmd = new SqlCommand(query, oconexion);
-
-                    //Ejecutando esa consulta
                     cmd.CommandType = CommandType.Text;
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
                             lista_usuarios.Add(
-                                new Usuarios() //Leera todos estos parametros para poder guardarlos en una lista dependiendo de lo que pidas
+                                new Usuarios() 
                                 {
                                     Id_Usuario = Convert.ToInt32(reader["Id_Usuario"]),
                                     Nombre_Usuario = reader["Nombre_Usuario"].ToString(),
@@ -49,7 +40,6 @@ namespace CapaDatos
                                     Correo_electronico_Usuario = reader["Correo_electronico_Usuario"].ToString(),
                                     Clave = reader["Clave"].ToString(),
                                     Activo = Convert.ToBoolean(reader["Activo"]),
-                                    //aqui estamos trallendo lo que esta dentro de roles por eso hicimos la consulta con inner
                                     Rol_Id_D = new Roles 
                                     {
                                         Id_Rol = Convert.ToInt32(reader["id_rol"]),
@@ -61,12 +51,9 @@ namespace CapaDatos
                     }
                 }
             }
-            catch (Exception ex) //La excepcion a nuetro codigo
-            {
-                lista_usuarios = new List<Usuarios> //Hubo un error en la consulta o en la agregacion a la lista y saltara esto en su lugar
-                {
-                    new Usuarios
-                    {
+            catch (Exception ex) {
+                lista_usuarios = new List<Usuarios> {
+                    new Usuarios {
                         Id_Usuario = -1,
                         Nombre_Usuario = ex.Message,
                         Apellido_Usuario = "de conexión",
@@ -74,12 +61,13 @@ namespace CapaDatos
                         Clave = "N/A",
                     }
                 };
-                // Mostrar el error de conexión
                 Console.WriteLine("Error en ListarUsuarios: " + ex.Message);
             }
-            return lista_usuarios; //Recuperemos el huascar
+            return lista_usuarios; 
         }
+        #endregion
 
+        #region FUNCION PARA REGISTRAR USUARIOS
         //ESTA FUNCION SERVIRA PARA AGREGAR USUARIOS (SIENDO EL ADMINISTRADOR)
         public int Registrar(Usuarios obj, out string mensaje_registrar)
         {
@@ -115,8 +103,9 @@ namespace CapaDatos
             }
             return idautogenerado;
         }
+        #endregion
 
-
+        #region FUNCION PARA ELIMINAR USUARIOS
         //ESTA FUNCION SERVIRA PARA ELIMINAR USUARIOS
         public bool Eliminar(int id, out string mensaje_eliminar)
         {
@@ -140,16 +129,16 @@ namespace CapaDatos
             }
             return resultado;
         }
+        #endregion
 
+        #region FUNCION PARA EDITAR USUARIOS
         //ESTA FUNCION SERVIRA PARA EDITAR USUARIOS
         public bool Editar(Usuarios obj, out string mensaje_editar)
         {
             bool resultado = false;
             mensaje_editar = string.Empty;
-            try
-            {
-                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
-                {
+            try {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn)) {
                     SqlCommand cmd = new SqlCommand("sp_EditarUsuario", oconexion);
                     cmd.Parameters.AddWithValue("Id_Usuario", obj.Id_Usuario);
                     cmd.Parameters.AddWithValue("Nombre_Usuario", obj.Nombre_Usuario);
@@ -175,5 +164,6 @@ namespace CapaDatos
             }
             return resultado;
         }
+        #endregion
     }
 }

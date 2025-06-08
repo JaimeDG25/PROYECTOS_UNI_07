@@ -32,7 +32,13 @@ namespace CapaNegocio
             string generar_clave = Guid.NewGuid().ToString("N").Substring(0, 6);
             return generar_clave;
         }
-
+        public static string GenerarCodigo()
+        {
+            Random rand = new Random();
+            int aleatorio = rand.Next(1, 6);
+            string generar_codigo = $"UTP-{aleatorio}";
+            return generar_codigo;
+        }
         public static bool EnviarCorreo(string correo, string asunto, string mensaje)
         {
             bool resultado = false;

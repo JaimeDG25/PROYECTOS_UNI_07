@@ -38,12 +38,10 @@ namespace Diseño_Productos.Controllers
             }
             else
             {
-                //if (usuario.Reestabltecer)
-                //{
-                //    TempData["IdUsuario"] = usuario.IdUsuario;
-                //    TempData["Nombres"] = usuario.Nombres;
-                //    return RedirectToAction("CambiarClave");
-                //}
+                Session["IdUsuario"] = usuario.Id_Usuario;
+                Session["NombreUsuario"] = usuario.Nombre_Usuario;
+                Session["ApellidoUsuario"] = usuario.Apellido_Usuario;
+                Session["CorreoUsuario"] = usuario.Correo_electronico_Usuario;
                 FormsAuthentication.SetAuthCookie(usuario.Correo_electronico_Usuario, false);
                 ViewBag.Error = null;
                 return RedirectToAction("Index", "Home");

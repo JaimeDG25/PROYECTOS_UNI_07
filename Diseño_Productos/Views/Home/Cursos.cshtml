@@ -16,7 +16,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-success" onclick="abrirModal()">
+                <button type="button" class="btn btn-success" onclick="abrirModalCursos()">
                     Agregar nuevo Curso
                 </button>
             </div>
@@ -27,9 +27,10 @@
                 <tr>
                     <th>Carrera</th>
                     <th>Curso</th>
-                    <th>Correo</th>
-                    <th>Rol designado</th>
-                    <th>Activo</th>
+                    <th>Descripcion</th>
+                    <th>Codigo</th>
+                    <th>Creditos</th>
+                    <th>Activo_Curso</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -40,40 +41,42 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="forModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static">
+<div class="modal fade" id="forModalCursos" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Crear usuarios</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Crear Cursos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modal-body">
                 <div class="row g-2">
                     <input id="txtid" type="number" value="0" />
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+                        <label for="exampleFormControlInput1" class="form-label">Nombre del cuso</label>
                         <input type="text" class="form-control" id="txtnombre" placeholder="Ingresa tus nombres" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="txtapellido" placeholder="Ingresa tus apellidos" autocomplete="off">
+                        <label for="exampleFormControlInput1" class="form-label">Descripcion del cuso</label>
+                        <input type="text" class="form-control" id="txtdescripcion" placeholder="Ingresa la descripcion" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Correo</label>
-                        <input type="text" class="form-control" id="txtcorreo" placeholder="Ingresa tu correo" autocomplete="off">
+                        <label for="exampleFormControlInput1" class="form-label">Codigo del curso</label>
+                        <input type="text" class="form-control" id="txtcodigo" placeholder="Ingresa el codigo del curso" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
-                        <label for="cboactivo" class="form-label">Activo</label>
-                        <select id="cboactivo" class="form-select">
+                        <label for="exampleFormControlInput1" class="form-label">Creditos</label>
+                        <input type="number" class="form-control" id="txtcredito" placeholder="Ingresa tus apellidos" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="cboactivo_curso" class="form-label">Activo_Curso</label>
+                        <select id="cboactivo_curso" class="form-select">
                             <option value="1">SIUU</option>
                             <option value="0">NOUU</option>
                         </select>
                     </div>
                     <div class="col-sm-6">
-                        <label for="cbrol" class="form-label">Rol designado</label>
-                        <select id="cborol" class="form-select">
-                            <option value="2">Profesor</option>
-                            <option value="1">Administrador</option>
+                        <label for="cbrol" class="form-label">Carrera del curso</label>
+                        <select id="cbocarrera" class="form-select">
                         </select>
                     </div>
                 </div>
@@ -90,4 +93,161 @@
         </div>
     </div>
 </div>
+@section scripts{
+    <script>
+        //CONSULTA AJAX PARA EL METODO LISTAR DE MI CONTROLADOR HOME
+        jQuery.ajax({
+            url: '@Url.Action("Listar_Cursos", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                // Carga los datos manualmente si es necesario
+                tabladata.clear().rows.add(datos.jeason_lista).draw();
+                console.log("Todos los datos que tengo recolectados");
+                console.log(datos);
+            }
+        });
+
+        //FUNCION PARA ABRIR EL MODAL DE LOS CURSOS
+        function abrirModalCursos() {
+            $('#mostrarError').hide();
+            $("#txtnombre").val("");
+            $("#txtdescripcion").val("");
+            $("#txtcredito").val(0);
+            $("#cboactivo_Curso").val(1);
+            $("#cbocarrera").val(0);
+            $("#cbocodigo").val(0);
+            $("#forModalCursos").modal("show");
+        }
+
+        //JQUERY PARA MOSTRAR LA LISTA DE LAS CARRERAS EN EL MODAL
+        jQuery.ajax({
+            url: "@Url.Action("Listar_Carreras", "Home")",
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log("Listado de carreras")
+                console.log(data)
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocarrera");
+                $.each(data.jeason_lista, function (index, valor) {
+                    $("<option>").attr({ "value": valor.Id_Carrera }).text(valor.Nombre_Carrera).appendTo("#cbocarrera");
+                })
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        //FUNCTION PARA VER LOS DATOS EN AL TABLA
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("Listar_Cursos", "Home")',
+                type: "GET",
+                dataType: "json",
+                success: function (datas) {
+                    //tabladata.clear().rows.add(data.creatina).draw();
+                    //console.log(datas.Nombre_Usuario)
+                }
+            },
+            "columns": [
+                { "data": "Carrera_Id.Nombre_Carrera" },
+                { "data": "Nombre_Curso" },
+                { "data": "Descripcion_Curso" },
+                { "data": "Codigo_Curso" },
+                { "data": "Creditos" },
+                {
+                  "data": "Activo_Curso", "render": function (valor) {
+                        if (valor) {
+                            return '<span class="badge bg-success">Superactivo </span>';
+                        } else {
+                            return '<span class="badge bg-danger">Desactivado </span>';
+                        }
+                   }
+                },
+                {
+                    'defaultContent':
+                        '<button type="button" class="btn btn-primary btn-editar btn-sm"><i class="fas fa-pen me-1"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-eliminar btn-sm ms-2"><i class="fas fa-trash me-1"></i></button>',
+                    'ordarable':false,
+                    'searchable': false,
+                    'width':'90px'
+                }
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+        });
+
+        //FUNCION PARA AGREGAR CURSOS
+        function guardar() {
+            var Nombre_Carrera = $("#cbocarrera option:selected").text();
+            var Cursos = {
+                Activo_Curso: $("#cboactivo_curso").val() == 1 ? true : false,
+                Carrera_Id: {
+                    Id_Carrera: parseInt($("#cbocarrera").val()),
+                    Nombre_Carrera: Nombre_Carrera
+                },
+                Descripcion_Curso: $("#txtdescripcion").val(),
+                Id_Curso: parseInt($("#txtid").val()),
+                Creditos: parseInt($("#txtcredito").val()),
+                Codigo_Curso: $("#txtcodigo").val(),
+                Nombre_Curso: $("#txtnombre").val()
+            }
+            //Ver el ajax que tengo de los usuarios al momento de guardarlo
+            console.log(Cursos)
+            jQuery.ajax({
+                url: '@Url.Action("Guardar_Curso", "Home")',
+                type: "POST",
+                //La palabra "registrado" debe ser igual al del HomeController.cs "registrar"
+                data: JSON.stringify({ registrado: Cursos }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#modal-body").LoadingOverlay("hide");
+                    if (Cursos.Id_Curso == 0) {
+                        if (data.resultado != 0) {
+                            Cursos.Id_Curso = data.resultado;
+                            tabladata.row.add(Cursos).draw(false);
+                            console.log(data.resultado)
+                            tabladata.ajax.reload(null, false);
+                            $("#forModal").modal("hide");
+                        } else {
+                            $('#mostrarError').text(data.mensaje);
+                            $('#mostrarError').show();
+                        }
+                    }
+                    else {
+                        if (data.resultado) {
+                            tabladata.row(fila_selec).data(Cursos).draw(false);
+                            fila_selec = null;
+                            $("#forModal").modal("hide");
+                        }
+                        else {
+                            $('#mostrarError').text(data.mensaje);
+                            $('#mostrarError').show();
+                        }
+                    }
+                    tabladata.ajax.reload(null, false);
+                },
+                error: function (error) {
+                    $("#modal-body").LoadingOverlay("hide");
+                    $('#mostrarError').text("Eror");
+                    $('#mostrarError').show();
+                },
+                beforeSend: function () {
+                    $("#modal-body").LoadingOverlay("show", {
+                        size: 15,
+                        text: "cargando ...",
+                        background: "rgba(230, 240, 250, 0.5)"
+                    });
+                }
+            });
+         }
+    </script>
+}
 

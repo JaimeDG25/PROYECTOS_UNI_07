@@ -12,6 +12,14 @@ namespace Diseño_Productos.Controllers
     {
         public ActionResult Index()
         {
+            string id = Session["IdUsuario"]?.ToString();
+            string nombre = Session["NombreUsuario"]?.ToString();
+            string apellido = Session["ApellidoUsuario"]?.ToString();
+            string correo = Session["CorreoUsuario"]?.ToString();
+            ViewBag.Id = id;
+            ViewBag.Nombre = nombre;
+            ViewBag.Apellido = apellido;
+            ViewBag.Correo = correo;
             return View();
         }
 
@@ -64,6 +72,34 @@ namespace Diseño_Productos.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public JsonResult Listar_Cursos()
+        {
+            List<Cursos> olista = new List<Cursos>();
+            olista = new CN_Cursos().Listar();
+            string saludo = "Un saludo de agradecimiento";
+            if (olista == null || !olista.Any())
+            {
+                return Json("Hola Mundoss", JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { jeason_lista = olista, saludo = saludo }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult Guardar_Curso(Cursos registrado) //Ese "registrado" debe ser igual
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (registrado.Id_Curso == 0)
+            {
+                resultado = new CN_Cursos().Registrar(registrado, out mensaje);
+            }
+            else
+            {
+                resultado = null;
+                //resultado = new CN_Cursos().Editar(registrado, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region Aca tenemos todo lo que se debe hacer para la tabla Usuarios
@@ -72,7 +108,7 @@ namespace Diseño_Productos.Controllers
             return View();
         }
         [HttpGet]
-        public JsonResult ListarCarreras()
+        public JsonResult Listar_Carreras()
         {
             List<Carreras> olistacarreras = new List<Carreras>();
             olistacarreras = new CN_Carreras().Listar();

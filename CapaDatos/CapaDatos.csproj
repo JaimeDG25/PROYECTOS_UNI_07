@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CD_Carreras.cs" />
+    <Compile Include="CD_Cursos.cs" />
     <Compile Include="CD_Usuarios.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
