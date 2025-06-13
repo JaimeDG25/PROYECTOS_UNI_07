@@ -12,7 +12,8 @@ namespace CapaEntidades
         public string Nombre_Estudiante { get; set; }
         public string Apellido_Estudiante { get; set; }
         public string Correo_Electronico_Estudiante { get; set; }
-        public int Inscripcion { get; set; }
-        public Carreras oCarrera_Id { get; set; }
+        public int DNI_Estudiante { get; set; }
+        public string Contraseña_Estudiante { get; set; }
+        public Carreras Carrera_Id { get; set; }
     }
 }

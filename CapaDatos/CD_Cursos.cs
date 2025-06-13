@@ -11,7 +11,7 @@ namespace CapaDatos
 {
     public class CD_Cursos
     {
-        #region LISTANDO LOS CURSOS POR CARRERAS
+        #region METODO PARA LISTAR LOS CURSOS POR CARRERAS
         public List<Cursos> Listar() {
             List<Cursos> lista_cursos = new List<Cursos>();
             try {
@@ -63,8 +63,8 @@ namespace CapaDatos
         }
         #endregion
 
-        #region AGREGANDO NUEVOS CURSOS
-        //ESTA FUNCION SERVIRA PARA AGREGAR USUARIOS (SIENDO EL ADMINISTRADOR)
+        #region METODO PARA REGISTRAR CURSOS
+        //ESTA FUNCION SERVIRA PARA REGISTRAR CURSOS (SIENDO EL ADMINISTRADOR)
         public int Registrar(Cursos obj, out string mensaje_registrar)
         {
             int idautogenerado = 0;
@@ -98,6 +98,32 @@ namespace CapaDatos
                 mensaje_registrar = ex.Message;
             }
             return idautogenerado;
+        }
+        #endregion
+
+        #region METODO PARA ELIMINAR CURSOS
+        //ESTA FUNCION SERVIRA PARA ELIMINAR CURSOS
+        public bool Eliminar(int id, out string mensaje_eliminar)
+        {
+            bool resultado = false;
+            mensaje_eliminar = string.Empty;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("delete top (1) from cursos where Id_Curso = @id", oconexion);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.CommandType = CommandType.Text;
+                    oconexion.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                mensaje_eliminar = ex.Message;
+            }
+            return resultado;
         }
         #endregion
     }

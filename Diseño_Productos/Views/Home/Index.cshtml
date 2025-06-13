@@ -4,12 +4,138 @@
 }
 
 <main>
+    <h1 class="mt-4">Comparte tus conocimientos para promover la educacion</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active" style="color:red">Dashboard</li>
+    </ol>
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h6>Cantidad-Docentes</h6>
+                            <h6 id="totalClientes">0</h6>
+                        </div>
+                        <div class="col-sm-3">
+                            <i class="fas fa-user-graduate fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h6>Cantidad-Cursos</h6>
+                            <h6 id="totalVentas">0</h6>
+                        </div>
+                        <div class="col-sm-3">
+                            <i class="fas fa-book-open fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning  text-white mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h6>Cantidad-Alumnos</h6>
+                            <h6 id="totalProductos">0</h6>
+                        </div>
+                        <div class="col-sm-3">
+                            <i class="fas fa-user-friends fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Comparte tus conocimientos para promover la educacion</h1>
-        <p class="lead">Te ayudamos a adapatarte al cambio !</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md"> Siguenos en nuestra redes sociales &raquo;</a></p>
-    </section>
+        <p class="lead">Te ayudamos a adapatarte al cambio !  </p>
+        <p><a href="#" class="btn btn-primary btn-md"> Siguenos en nuestra redes sociales &raquo;</a></p>
+    </section><hr />
+    <div class="row">
+        <div class="col-md-7">
+            <center>
+                <h2 class="fw-bold fs-3">Conoce un poco mas sobre nosotros</h2>
+                <p class="text-wrap">
+                    Quisimos desarrollar esta plataforma con el objetivo de crear un espacio colaborativo de estudio dirigido
+                    especialmente a estudiantes universitarios. Entendemos que, en muchas ocasiones, las instituciones no cuentan
+                    con suficientes talleres, tutorías o recursos complementarios para abordar los cursos más complejos o avanzados
+                    de las distintas carreras. Esta falta de apoyo puede dificultar el aprendizaje y generar inseguridad académica
+                    en muchos alumnos
+                </p>
+                <p>
+                    Por eso, pensamos en una alternativa impulsada por los mismos estudiantes: un entorno donde los compañeros
+                    puedan compartir conocimientos, explicar conceptos entre ellos y construir una red de aprendizaje mutuo.
+                    A través de esta plataforma, no solo se busca brindar apoyo a quienes tienen dificultades en determinados
+                    temas, sino también fortalecer la comprensión de quienes enseñan, ya que explicar a otros es una de las formas
+                    más efectivas de reforzar lo aprendido.
+                </p>
+            </center>
+        </div>
+        <div class="col-md-1">
 
+        </div>
+        <div class="col-md-4">
+            <img src="~/Content/images/imagenyt.jpeg" alt="Logo" width="300" height="310" style="border-radius:10px">
+        </div>
+    </div>
+    <hr />
+    <div class="row g-3 my-3">
+        <!-- Primera Tarjeta -->
+        <div class="col-12 col-sm-4">
+            <a href="@Url.Action("Estudiantes","Home")" class="d-flex flex-column align-items-center border border-danger rounded p-3 text-decoration-none text-dark text-center bg-danger bg-opacity-25">
+                <h3 class="fs-3 fw-bold">Postula</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                    <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                    <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                    <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                    <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                    <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                    <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                    <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                    <path d="M9 12l2 2l4 -4" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Segunda Tarjeta -->
+        <div class="col-12 col-sm-4">
+            <a href="#" class="d-flex flex-column align-items-center border border-danger rounded p-3 text-decoration-none text-dark text-center bg-danger bg-opacity-25">
+                <h3 class="fs-3 fw-bold">Correo</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                    <path d="M3 7l9 6l9 -6" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Tercera Tarjeta -->
+        <div class="col-12 col-sm-4">
+            <a href="#" onclick="abrirModalCarreras()" class="d-flex flex-column align-items-center border border-danger rounded p-3 text-decoration-none text-dark text-center bg-danger bg-opacity-25">
+                <h3 class="fs-3 fw-bold">Carreras</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                    <path d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                    <path d="M5 8h4" />
+                    <path d="M9 16h4" />
+                    <path d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
+                    <path d="M14 9l4 -1" />
+                    <path d="M16 16l3.923 -.98" />
+                </svg>
+            </a>
+        </div>
+    </div>
     <div class="row">
         <section class="col-md-4" aria-labelledby="gettingStartedTitle">
             <h2 id="gettingStartedTitle">Conoce un poco mas de nosotros</h2>
@@ -31,4 +157,77 @@
             <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
         </section>
     </div>
+
 </main>
+@section scripts{
+    <script>
+        console.log("El script se está ejecutando correctamente.");
+        var tabladata;
+        $(document).ready(function () {
+            console.log("Empezamos fuerte");
+            $("#txtfechainicio").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+            $("#txtfechafin").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date())
+
+            jQuery.ajax({
+                url: '@Url.Action("Lista_Dashboard", "Home")',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (datos) {
+                    // Carga los datos manualmente si es necesario
+                    var objeto = datos.respuesta
+                    console.log("Todos los datos obtenidos")
+                    console.log(datos.respuesta.TotalDocentes)
+                    console.log(datos.respuesta.TotalCursos)
+                    console.log(datos.respuesta.TotalAlumnos)
+                    $("#totalClientes").text(objeto.TotalDocentes)
+                    $("#totalVentas").text(objeto.TotalCursos)
+                    $("#totalProductos").text(objeto.TotalAlumnos)
+                    // Esto agrega los datos a la tabla
+                    console.log("Todos los datos que tengo recolectados");
+                    console.log(datos);
+                }
+            });
+
+            var Url = '@Url.Action("Lista_Reporte", "Home")' +
+                "?fechainicio=" + $("#txtfechainicio").val() +
+                "&fechafin=" + $("#txtfechafin").val() +
+                "&idtransaccion=" + $("#txtidtransaccion").val()
+
+            tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: Url,
+                type: "GET",
+                dataType: "json",
+                success: function (datas) {
+                    //tabladata.clear().rows.add(data.creatina).draw();
+                }
+            },
+            "columns": [
+                { "data": "FechaVenta" },
+                { "data": "Cliente" },
+                { "data": "Producto" },
+                { "data": "Precio" },
+                { "data": "Cantidad" },
+                { "data": "Total" },
+                { "data": "IdTransaccion" }
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+            });
+        });
+        $("#btnbuscar").on("click", function () {
+            var nuevaUrl = '@Url.Action("Lista_Reporte", "Home")' +
+            "?fechainicio=" + $("#txtfechainicio").val() +
+            "&fechafin=" + $("#txtfechafin").val() +
+            "&idtransaccion=" + $("#txtidtransaccion").val()
+            tabladata.ajax.url(nuevaUrl).load()
+        })
+        $("#btnexcel")
+
+        console.log("El script se está ejecutando correctamente.");
+    </script>
+} 

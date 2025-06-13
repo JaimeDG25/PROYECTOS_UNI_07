@@ -50,6 +50,10 @@ namespace CapaNegocio
         #endregion
 
         #region FUNCION PARA ELIMINAR CURSOS EN NEGOCIO
+        public bool Eliminar(int id, out string mensaje_eliminar)
+        {
+            return objeto_cn_cursos.Eliminar(id, out mensaje_eliminar);
+        }
         #endregion
 
         #region FUNCION PARA EDITAR CURSOS EN NEGOCIO

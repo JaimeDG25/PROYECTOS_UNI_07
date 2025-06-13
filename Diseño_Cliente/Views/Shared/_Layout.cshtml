@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        @Html.ActionLink(" Programa de talleres UTP", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Bienvenido: @Session["NombreUsuario"] @Session["ApellidoUsuario"] <i class="fas fa-users-cog fa-fw"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!"> @Session["IdUsuario"] @Session["NombreUsuario"] @Session["ApellidoUsuario"]</a></li>
+                    <li><a class="dropdown-item" href="#!">@Session["CorreoUsuario"]</a></li>
+                    <li><a class="dropdown-item" href="#!">Settings</a></li>
+                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("CerrarSession","Acceso")">
+                            Cerrar Sesion <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Secciones</div>
+                        <a class="nav-link opaco" href="@Url.Action("Index","Home")">
+                            <div class="sb-nav-link-icon opaco"><i class="fas fa-laptop-house"></i></div>
+                            Principal de adminin
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Usuarios","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                            Usuarios administrados
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Cursos","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
+                            Cursos incorporados
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Estudiantes","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                            Estudiantes agregados
+                        </a>
+                        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 nav-link" onclick="abrirModalCarreras()">
+                            <div class="sb-nav-link-icon"><i class="fas fa-school"></i></div>
+                            Mostrar Carreras
+                        </button>
+                        <div class="sb-sidenav-menu-heading">Secciones</div>
+                        <a class="nav-link" href="@Url.Action("Index","Acceso")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Asignar curso a docente
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Adpoint","Acceso")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Marcas
+                        </a>
+                        <a class="nav-link" href="">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Productos
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Promueve el conocimiento:</div>
+                    Universidad Sideral Carrion
+                </div>
+            </nav>
+        </div>
+        <div class="capa_sombreado">
+            <div class="capa_bordeada">
+                <div id="layoutSidenav_content" class="capa_contenido">
+                    <main>
+                        <div class="container-fluid px-4">
+                            @RenderBody()
+                        </div>
+                    </main>
+                    <footer class="py-4 bg-light mt-auto">
+                        <div class="container-fluid px-4">
+                            <div class="d-flex align-items-center justify-content-between small">
+                                <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+                                <div>
+                                    <a href="#">Privacy Policy</a>
+                                    &middot;
+                                    <a href="#">Terms &amp; Conditions</a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

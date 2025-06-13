@@ -316,6 +316,7 @@
     <Content Include="Content\estilos.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Content\images\imagenyt.jpeg" />
     <Content Include="Content\images\logo.jpeg" />
     <Content Include="Content\images\logo_login.jpeg" />
     <Content Include="Content\images\utp.jpg" />
@@ -528,6 +529,7 @@
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\Prueba\Index.cshtml" />
     <Content Include="Views\Home\Cursos.cshtml" />
+    <Content Include="Views\Home\Estudiantes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

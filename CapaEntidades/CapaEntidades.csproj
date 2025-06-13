@@ -44,6 +44,7 @@
     <Compile Include="Asignaciones_Cursos.cs" />
     <Compile Include="Carreras.cs" />
     <Compile Include="Cursos.cs" />
+    <Compile Include="Dashboard.cs" />
     <Compile Include="Estudiantes.cs" />
     <Compile Include="Inscripciones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

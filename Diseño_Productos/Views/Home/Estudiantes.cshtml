@@ -1,0 +1,308 @@
+﻿
+@{
+    ViewBag.Title = "Estudiantes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2>Panel Administrativo de Estudiantes</h2>
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Registros</a></li>
+    <li class="breadcrumb-item active">Estudiantes</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i>Lista de Estudiantes
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal()">
+                    Agregar nuevo usuario
+                </button>
+            </div>
+        </div><hr />
+
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Correo</th>
+                    <th>Carrera</th>
+                    <th>DNI</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" onclick="guardares()">ver</button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="forModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Crear Estudiantes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row g-2">
+                    <input id="txtid" type="number" value="0" />
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+                        <input type="text" class="form-control" id="txtnombre" placeholder="Ingresa tus nombres">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="txtapellido" placeholder="Ingresa tus apellidos"  >
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">Correo</label>
+                        <input type="text" class="form-control" id="txtcorreo" placeholder="Ingresa tu correo" >
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="exampleFormControlInput1" class="form-label">DNI</label>
+                        <input type="number" class="form-control" id="txtdni" placeholder="Ingresa tu dni" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="cbrol" class="form-label">Carrera del estudiante</label>
+                        <select id="cbocarrera" class="form-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div id="mostrarError" class="alert alert-danger" role="alert">
+                        This is a danger alert—check it out!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>s
+</div>
+@section scripts{
+    <script>
+        console.log("Script del estudiante")
+        //FUNCTION PARA PODER ABRIR SOLO EL MODAL
+        function abrirModal(formato_json) {
+            //empezando por abrir el modal con todos los valores vacios por defeceto
+            $('#mostrarError').hide();
+            $("#txtid").val(0)
+            $("#txtnombre").val("");
+            $("#txtapellido").val("");
+            $("#txtcorreo").val("");
+            $("#cboactivo").val(1);
+            //si anteriormente se intento enviar informacion pero paso algo entonces este seguira con esa informacion
+            if (formato_json != null) {
+                $("#txtid").val(formato_json.Id_Estudiante);
+                $("#txtnombre").val(formato_json.Nombre_Estudiante);
+                $("#txtapellido").val(formato_json.Apellido_Estudiante);
+                $("#txtcorreo").val(formato_json.Correo_Electronico_Estudiante);
+                $("#cboactivo").val(formato_json.Activo == true ? 1 : 0);
+                $("#cborol").val(formato_json.Carrera_Id_D.Id_Carrera);
+                console.log("Dato antes de editar")
+                console.log("Tu nombre es es :" + formato_json.Nombre_Estudiante);
+                console.log("Tu id es :" + formato_json.Id_Estudiante);
+                console.log("Tu id del rol es :" + formato_json.Carrera_Id_D.Id_Carrera);
+            }
+            $("#forModal").modal("show");
+        }
+        //CONSULTA AJAX PARA EL METODO LISTAR ESTUDIANTES DE MI CONTROLADOR HOME
+        jQuery.ajax({
+            url: '@Url.Action("Listar_Estudiantes", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                // Carga los datos manualmente si es necesario
+                tabladata.clear().rows.add(datos.jeason_lista).draw();
+                console.log("Todos los datos que tengo recolectados");
+                console.log(datos);
+            }
+        });
+        //FUNCTION PARA VER LOS DATOS EN AL TABLA
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListarUsuarios", "Home")',
+                type: "GET",
+                dataType: "json",
+                success: function (datas) {
+                    //tabladata.clear().rows.add(data.creatina).draw();
+                    //console.log(datas.Nombre_Usuario)
+                }
+            },
+            "columns": [
+                { "data": "Nombre_Estudiante" },
+                { "data": "Apellido_Estudiante" },
+                { "data": "Correo_Electronico_Estudiante" },
+                { "data": "Carrera_Id.Nombre_Carrera" },
+                { "data": "DNI_Estudiante" },
+                {
+                    'defaultContent':
+                        '<button type="button" class="btn btn-primary btn-editar btn-sm"><i class="fas fa-pen me-1"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-eliminar btn-sm ms-2"><i class="fas fa-trash me-1"></i></button>',
+                    'ordarable':false,
+                    'searchable': false,
+                    'width':'90px'
+                }
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+        });
+        //JQUERY PARA MOSTRAR LA LISTA DE LAS CARRERAS EN EL MODAL
+        jQuery.ajax({
+            url: "@Url.Action("Listar_Carreras", "Home")",
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log("Listado de carreras")
+                console.log(data)
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocarrera");
+                $.each(data.jeason_lista, function (index, valor) {
+                    $("<option>").attr({ "value": valor.Id_Carrera }).text(valor.Nombre_Carrera).appendTo("#cbocarrera");
+                })
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        //FUNCION PARA PROBAR EL GUARDAR ESTUDIANTES
+        function guardarprueba() {
+            var Nombre_Carrera = $("#cbocarrera option:selected").text();
+            var Estudiantes = {
+                Id_Estudiante: parseInt($("#txtid").val()),
+                Nombre_Estudiante: $("#txtnombre").val(),
+                Apellido_Estudiante: $("#txtapellido").val(),
+                Correo_Electronico_Estudiante: $("#txtcorreo").val(),
+                Carrera_Id: {
+                    Id_Carrera: parseInt($("#cbocarrera").val()),
+                    Nombre_Carrera: Nombre_Carrera
+                },
+                DNI_Estudiante: $("#txtdni").val(),
+            }
+            console.log(Estudiantes)
+        }
+        //FUNCION PARA AGREGAR ESTUDIANTES
+        function guardar() {
+            var Nombre_Carrera = $("#cbocarrera option:selected").text();
+            var Estudiantes = {
+                    Id_Estudiante: parseInt($("#txtid").val()),
+                    Nombre_Estudiante: $("#txtnombre").val(),
+                    Apellido_Estudiante: $("#txtapellido").val(),
+                    Correo_Electronico_Estudiante: $("#txtcorreo").val(),
+                    Carrera_Id: {
+                        Id_Carrera: parseInt($("#cbocarrera").val()),
+                        Nombre_Carrera: Nombre_Carrera
+                    },
+                    DNI_Estudiante: $("#txtdni").val(),
+                }
+            //Ver el ajax que tengo de los usuarios al momento de guardarlo
+            console.log(Estudiantes)
+            jQuery.ajax({
+                url: '@Url.Action("Registrar_Estudiante", "Home")',
+                type: "POST",
+                //La palabra "registrado" debe ser igual al del HomeController.cs "registrar"
+                data: JSON.stringify({ registrado: Estudiantes }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#modal-body").LoadingOverlay("hide");
+                    if (Estudiantes.Id_Estudiante == 0) {
+                        if (data.resultado != 0) {
+                            Estudiantes.Id_Estudiante = data.resultado;
+                            tabladata.row.add(Estudiantes).draw(false);
+                            console.log(data.resultado)
+                            tabladata.ajax.reload(null, false);
+                            $("#forModal").modal("hide");
+                        } else {
+                            $('#mostrarError').text(data.mensaje);
+                            $('#mostrarError').show();
+                        }
+                    }
+                    else {
+                        if (data.resultado) {
+                            tabladata.row(fila_selec).data(Estudiantes).draw(false);
+                            fila_selec = null;
+                            $("#forModal").modal("hide");
+                        }
+                        else {
+                            $('#mostrarError').text(data.mensaje);
+                            $('#mostrarError').show();
+                        }
+                    }
+                    tabladata.ajax.reload(null, false);
+                },
+                error: function (error) {
+                    $("#modal-body").LoadingOverlay("hide");
+                    $('#mostrarError').text("Eror");
+                    $('#mostrarError').show();
+                },
+                beforeSend: function () {
+                    $("#modal-body").LoadingOverlay("show", {
+                        size: 15,
+                        text: "cargando ...",
+                        background: "rgba(230, 240, 250, 0.5)"
+                    });
+                }
+            });
+        }
+        //FUNCION PARA EDITAR ESTUDIANTE
+        $("#tabla tbody").on('click', '.btn-editar', function () {
+            fila_selec = $(this).closest("tr");
+            datos = tabladata.rows(fila_selec).data()[0];
+            console.log(datos);
+            abrirModal(datos);
+
+        })
+        //FUNCION PARA ELIMINAR CURSOS
+        $("#tabla tbody").on('click', '.btn-eliminar', function () {
+            var estudiante_selec = $(this).closest("tr");
+            var data = tabladata.row(estudiante_selec).data();
+            //muestra los datos antes de eliminarlo
+            console.log(data);
+            swal(
+                {
+                title: "Esta Seguro?",
+                text: "¿Desea eliminar el usuario?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Sí",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+                },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("Eliminar_Estudiante", "Home")',
+                        type: "POST",
+                        data: JSON.stringify({ id: data.Id_Estudiante }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data && data.respuesta) {
+                                tabladata.row(estudiante_selec).remove().draw();
+                            } else {
+                                swal("Disculpa quipes pero no ", data.mensaje,"error");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+
+                }
+            );
+        })
+    </script>    
+}
+
