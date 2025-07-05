@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
+using CapaEntidades;
 
 namespace CapaNegocio
 {
@@ -32,11 +33,10 @@ namespace CapaNegocio
             string generar_clave = Guid.NewGuid().ToString("N").Substring(0, 6);
             return generar_clave;
         }
-        public static string GenerarCodigo()
+        public static string GenerarCodigo(string carrera)
         {
-            Random rand = new Random();
-            int aleatorio = rand.Next(1, 6);
-            string generar_codigo = $"UTP-{aleatorio}";
+            string guid = Guid.NewGuid().ToString("N").Substring(0, 8);
+            string generar_codigo = $"UTP-{guid}-{carrera}";
             return generar_codigo;
         }
         public static bool EnviarCorreo(string correo, string asunto, string mensaje)

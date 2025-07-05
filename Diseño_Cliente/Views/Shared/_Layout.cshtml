@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Estilos.css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -16,7 +17,6 @@
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -44,38 +44,46 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Secciones</div>
+                        <div class="sb-sidenav-menu-heading secciones">Secciones</div><hr />
                         <a class="nav-link opaco" href="@Url.Action("Index","Home")">
-                            <div class="sb-nav-link-icon opaco"><i class="fas fa-laptop-house"></i></div>
-                            Principal de adminin
-                        </a>
-                        <a class="nav-link" href="@Url.Action("Usuarios","Home")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
-                            Usuarios administrados
+                            <div class="sb-nav-link-icon opaco"><i class="fas fa-laptop-house icono"></i></div>
+                            <div>Principal </div>
                         </a>
                         <a class="nav-link" href="@Url.Action("Cursos","Home")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
-                            Cursos incorporados
+                            <div class="sb-nav-link-icon"><i class="fas fa-book icono"></i></div>
+                            Cursos
                         </a>
-                        <a class="nav-link" href="@Url.Action("Estudiantes","Home")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
-                            Estudiantes agregados
+                        <a class="nav-link" href="@Url.Action("Calendario","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar icono"></i></div>
+                            Calendario
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Solicitar_Cursos","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bookmark icono"></i></div>
+                            Solicitar cursos
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Chats","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-circle icono"></i></div>
+                            Chats
                         </a>
                         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 nav-link" onclick="abrirModalCarreras()">
-                            <div class="sb-nav-link-icon"><i class="fas fa-school"></i></div>
-                            Mostrar Carreras
+                            <div class="sb-nav-link-icon"><i class="fas fa-mail-bulk icono"></i></div>
+                            Correo
                         </button>
-                        <div class="sb-sidenav-menu-heading">Secciones</div>
+                        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 nav-link" onclick="">
+                            <div class="sb-nav-link-icon"><i class="fas fa-question-circle icono"></i></div>
+                            FAQs
+                        </button>
+                        <div class="sb-sidenav-menu-heading secciones ">Secciones</div><hr />
                         <a class="nav-link" href="@Url.Action("Index","Acceso")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area icono"></i></div>
                             Asignar curso a docente
                         </a>
                         <a class="nav-link" href="@Url.Action("Adpoint","Acceso")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-table icono"></i></div>
                             Marcas
                         </a>
                         <a class="nav-link" href="">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-table icono"></i></div>
                             Productos
                         </a>
                     </div>
@@ -110,11 +118,12 @@
                 </div>
             </div>
         </div>
-        
-        
+
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/complementos")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

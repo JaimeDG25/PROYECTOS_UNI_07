@@ -11,7 +11,7 @@ namespace CapaDatos
 {
     public class CD_Usuarios
     {
-        #region LISTANDO LOS USUARIOS
+        #region METODO PARA LISTAR ESTUDIANTES
         public List<Usuarios> Listar() {
 
             List<Usuarios> lista_usuarios = new List<Usuarios>(); 
@@ -67,7 +67,7 @@ namespace CapaDatos
         }
         #endregion
 
-        #region FUNCION PARA REGISTRAR USUARIOS
+        #region METODO PARA REGISTRAR USUARIOS
         //ESTA FUNCION SERVIRA PARA AGREGAR USUARIOS (SIENDO EL ADMINISTRADOR)
         public int Registrar(Usuarios obj, out string mensaje_registrar)
         {
@@ -105,7 +105,7 @@ namespace CapaDatos
         }
         #endregion
 
-        #region FUNCION PARA ELIMINAR USUARIOS
+        #region METODO PARA ELIMINAR USUARIOS
         //ESTA FUNCION SERVIRA PARA ELIMINAR USUARIOS
         public bool Eliminar(int id, out string mensaje_eliminar)
         {
@@ -131,7 +131,7 @@ namespace CapaDatos
         }
         #endregion
 
-        #region FUNCION PARA EDITAR USUARIOS
+        #region METODO PARA EDITAR USUARIOS
         //ESTA FUNCION SERVIRA PARA EDITAR USUARIOS
         public bool Editar(Usuarios obj, out string mensaje_editar)
         {

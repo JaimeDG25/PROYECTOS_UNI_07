@@ -46,5 +46,58 @@ namespace CapaDatos
             }
             return reporte_dashboard;
         }
+        public List<Cursos> Listar_Mejores()
+        {
+
+            List<Cursos> listar_mejores = new List<Cursos>();
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    oconexion.Open();
+                    Console.WriteLine("Conexión exitosa a la base de datos.");
+                    String query = @"SELECT TOP 1 
+                                        cu.Carrera_Id, 
+                                        ca.Nombre_Carrera, 
+                                        COUNT(*) AS TotalCursos
+                                    FROM cursos cu
+                                    INNER JOIN carreras ca ON cu.Carrera_Id = ca.Id_Carrera
+                                    GROUP BY cu.Carrera_Id, ca.Nombre_Carrera
+                                    ORDER BY TotalCursos DESC";
+
+                    SqlCommand cmd = new SqlCommand(query, oconexion);
+                    cmd.CommandType = CommandType.Text;
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            listar_mejores.Add(
+                                new Cursos()
+                                {
+                                    Carrera_Id = new Carreras
+                                    {
+                                        Id_Carrera = Convert.ToInt32(reader["id_carrera"]),
+                                        Nombre_Carrera = reader["nombre_carrera"].ToString()
+                                    },
+                                    TotalVeces= Convert.ToInt32(reader["TotalCursos"]),
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                listar_mejores = new List<Cursos> {
+                    new Cursos {
+                        Id_Curso = -1,
+                        Nombre_Curso = ex.Message,
+                    }
+                };
+                Console.WriteLine("Error en ListarMejores: " + ex.Message);
+            }
+            return listar_mejores;
+        }
     }
 }

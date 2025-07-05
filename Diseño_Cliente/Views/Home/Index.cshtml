@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <main>
@@ -31,3 +32,20 @@
         </section>
     </div>
 </main>
+@section scripts{
+    <script>
+        //CONSULTA AJAX PARA EL METODO LISTAR ESTUDIANTES DE MI CONTROLADOR HOME
+        jQuery.ajax({
+            url: '@Url.Action("Listar_Estudiantes", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                // Carga los datos manualmente si es necesario
+                //tabladata.clear().rows.add(datos.jeason_lista).draw();
+                console.log("Todos los datos que tengo recolectados");
+                console.log(datos);
+            }
+        });
+    </script>    
+}

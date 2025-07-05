@@ -132,5 +132,41 @@ namespace CapaDatos
             return resultado;
         }
         #endregion
+
+        #region METODO PARA EDITAR ESTUDIANTES
+        public bool Editar(Estudiantes obj, out string mensaje_editar)
+        {
+            bool resultado = false;
+            mensaje_editar = string.Empty;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_EditarEstudiante", oconexion);
+                    cmd.Parameters.AddWithValue("Id_Estudiante", obj.Id_Estudiante);
+                    cmd.Parameters.AddWithValue("Nombre_Estudiante", obj.Nombre_Estudiante);
+                    cmd.Parameters.AddWithValue("Apellido_Estudiante", obj.Apellido_Estudiante);
+                    cmd.Parameters.AddWithValue("Correo_Electronico_Estudiante", obj.Correo_Electronico_Estudiante);
+                    cmd.Parameters.AddWithValue("Carrera_Id", obj.Carrera_Id.Id_Carrera);
+                    cmd.Parameters.AddWithValue("DNI_Estudiante", obj.DNI_Estudiante);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    oconexion.Open();
+                    cmd.ExecuteNonQuery();
+
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    mensaje_editar = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                mensaje_editar = ex.Message;
+            }
+            return resultado;
+        }
+        #endregion
     }
 }

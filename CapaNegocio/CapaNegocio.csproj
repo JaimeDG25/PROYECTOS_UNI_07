@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CN_Asignacion_D_C.cs" />
     <Compile Include="CN_Carreras.cs" />
     <Compile Include="CN_Cursos.cs" />
     <Compile Include="CN_Dashboard.cs" />

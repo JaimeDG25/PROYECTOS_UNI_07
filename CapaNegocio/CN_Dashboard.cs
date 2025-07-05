@@ -15,5 +15,6 @@ namespace CapaNegocio
         {
             return objeto_cn_dashboard.Total_Dashboard_CD();
         }
+
     }
 }

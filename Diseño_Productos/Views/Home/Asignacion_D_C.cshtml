@@ -1,0 +1,312 @@
+﻿
+@{
+    ViewBag.Title = "Asignacion_D_C";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2>Panel Administrativo de Asignacion de Docentes a Cursos</h2>
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Registro</a></li>
+    <li class="breadcrumb-item active">Asignacion de Docentes a Cursos</li>
+</ol>
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i>Lista de Asignacion de Docentes a Cursos
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModalAsignacion()">
+                    Asignacinar Docentes a Cursos
+                </button>
+            </div>
+        </div><hr />
+
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Asistente Id</th>
+                    <th>Nombre Completo</th>
+                    <th>Curso Id</th>
+                    <th>Nombre del Cursos</th>
+                    <th>Descripcion</th>
+                    <th>Codigo</th>
+                    <th>Creditos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" onclick="guardares()">ver</button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="forModalCursos" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Crear Cursos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row g-2">
+                    <input id="txtid" type="number" value="0" />
+                    
+                    <div class="col-sm-6">
+                        <label for="cboasistentes" class="form-label">Lista de Asistentes</label>
+                        <select id="cboasistentes" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="cbocursos" class="form-label">Lista de Cursos</label>
+                        <select id="cbocursos" class="form-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div id="mostrarError" class="alert alert-danger" role="alert">
+                        This is a danger alert—check it out!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        //CONSULTA AJAX PARA EL METODO LISTAR ASIGNACION EN CONSOLE
+        jQuery.ajax({
+            url: '@Url.Action("Listar_Asignacion_D_C", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                // Carga los datos manualmente si es necesario
+                tabladata.clear().rows.add(datos.jeason_lista).draw();
+                console.log("DATOS RECOLECTADOS DE ASIGNACION");
+                console.log(datos);
+            }
+        });
+
+        //FUNCTION PARA VER LOS DATOS EN AL TABLA
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("Listar_Asignacion_D_C", "Home")',
+                type: "GET",
+                dataType: "json",
+                success: function (datas) {
+                    //tabladata.clear().rows.add(data.creatina).draw();
+                    //console.log(datas.Nombre_Usuario)
+                }
+            },
+            "columns": [
+                { "data": "Asistente_Id.Id_Usuario" },
+                { "data": "Asistente_Id.Nombre_Usuario" },
+                { "data": "Curso_Id.Id_Curso" },
+                { "data": "Curso_Id.Nombre_Curso" },
+                { "data": "Curso_Id.Descripcion_Curso" },
+                { "data": "Curso_Id.Codigo_Curso" },
+                { "data": "Curso_Id.Creditos" },
+
+                {
+                    'defaultContent':
+                        '<button type="button" class="btn btn-primary btn-editar btn-sm"><i class="fas fa-pen me-1"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-eliminar btn-sm ms-2"><i class="fas fa-trash me-1"></i></button>',
+                    'ordarable':false,
+                    'searchable': false,
+                    'width':'90px'
+                }
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+        });
+
+        //JQUERY PARA MOSTRAR LA LISTA DE LOS USUARIOS EN EL MODAL
+        jQuery.ajax({
+            url: "@Url.Action("ListarUsuarios", "Home")",
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log("Listado de Asignacion")
+                console.log(data)
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboasistentes");
+                $.each(data.jeason_lista, function (index, valor) {
+                    $("<option>").attr({ "value": valor.Id_Usuario }).text(valor.Nombre_Usuario).appendTo("#cboasistentes");
+                })
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        //JQUERY PARA MOSTRAR LA LISTA DE LOS CURSOS EN EL MODAL
+        jQuery.ajax({
+            url: "@Url.Action("Listar_Cursos", "Home")",
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log("Listado de Asignacion")
+                console.log(data)
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocursos");
+                $.each(data.jeason_lista, function (index, valor) {
+                    $("<option>").attr({ "value": valor.Id_Curso }).text(valor.Nombre_Curso).appendTo("#cbocursos");
+                })
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        //FUNCION PARA ABRIR EL MODAL DE LA ASIGNACION
+        function abrirModalAsignacion(formato_json) {
+            $('#mostrarError').hide();
+            $("#cboasistentes").val(0);
+            $("#cbocursos").val(0);
+            if (formato_json != null) {
+                $("#txtid").val(formato_json.Id_Asignacion);
+                $("#cboasistentes").val(formato_json.Activo_Curso == true ? 1 : 0);
+                $("#cbocursos").val(formato_json.Carrera_Id.Id_Carrera);
+            }
+            $("#forModalCursos").modal("show");
+        }
+        //FUNCION PARA ABRIR EL BOTON REGISTRAR DE LA ASIGNACION
+        function guardartemporal(){
+            var Asignacion = {
+                Curso_Id: {
+                    Id_Curso: parseInt($("#cbocursos").val()),
+                    Nombre_Curso: $("#cbocursos option:selected").text()
+                },
+                Asistente_Id: {
+                    Id_Curso: parseInt($("#cboasistentes").val()),
+                    Nombre_Curso: $("#cboasistentes option:selected").text()
+                },
+                Id_Asistente: parseInt($("#txtid").val()),
+            }
+            console.log(Asignacion);
+        }
+        function guardar() {
+            var Asignaciones = {
+                Curso_Id: {
+                    Id_Curso: parseInt($("#cbocarrera").val()),
+                    Nombre_Curso: $("#cbocursos option:selected").text()
+                },
+                Asistente_Id: {
+                    Id_Curso: parseInt($("#cbocarrera").val()),
+                    Nombre_Curso: $("#cboasistentes option:selected").text()
+                },
+                Id_Asistente: parseInt($("#txtid").val()),
+            }
+            console.log(Asignaciones);
+            jQuery.ajax({
+                url: '@Url.Action("Guardar_Asignacion", "Home")',
+                type: "POST",
+                //La palabra "registrado" debe ser igual al del HomeController.cs "registrar"
+                data: JSON.stringify({ registrado: Asignaciones }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#modal-body").LoadingOverlay("hide");
+                    if (Asignaciones.Id_Asignacion == 0) {
+                        if (data.resultado != 0) {
+                            Asignaciones.Id_Asignacion = data.resultado;
+                            tabladata.row.add(Asignaciones).draw(false);
+                            console.log(data.resultado)
+                            tabladata.ajax.reload(null, false);
+                            $("#forModalCursos").modal("hide");
+                            location.reload();
+                        } else {
+                            $('#mostrarError').text(data.mensaje);
+                            $('#mostrarError').show();
+                        }
+                    }
+                    else {
+                        if (data.resultado) {
+                            tabladata.row(fila_selec).data(Asignaciones).draw(false);
+                            fila_selec = null;
+                            $("#forModal").modal("hide");
+                        }
+                        else {
+                            $('#mostrarError').text(data.mensaje);
+                            $('#mostrarError').show();
+                        }
+                    }
+                    tabladata.ajax.reload(null, false);
+                },
+                error: function (error) {
+                    $("#modal-body").LoadingOverlay("hide");
+                    $('#mostrarError').text("Eror");
+                    $('#mostrarError').show();
+                },
+                beforeSend: function () {
+                    $("#modal-body").LoadingOverlay("show", {
+                        size: 15,
+                        text: "cargando ...",
+                        background: "rgba(230, 240, 250, 0.5)"
+                    });
+                }
+            });
+        }
+
+        //FUNCION PARA ABRIR EL BOTON EDITAR DE LA ASIGNACION
+        $("#tabla tbody").on('click', '.btn-editar', function () {
+            fila_selec = $(this).closest("tr");
+            datos = tabladata.rows(fila_selec).data()[0];
+            console.log(datos);
+            abrirModalAsignacion(datos);
+
+        })
+
+        //FUNCION PARA ABRIR EL BOTON ELIMINAR LA ASIGNACION
+        $("#tabla tbody").on('click', '.btn-eliminar', function () {
+            var curso_selec = $(this).closest("tr");
+            var data = tabladata.row(curso_selec).data();
+            //muestra los datos antes de eliminarlo
+            console.log(data);
+            swal(
+                {
+                title: "Esta Seguro?",
+                text: "¿Desea eliminar el usuario?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Sí",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+                },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("Eliminar_curso", "Home")',
+                        type: "POST",
+                        data: JSON.stringify({ id: data.Id_Curso }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data && data.respuesta) {
+                                tabladata.row(curso_selec).remove().draw();
+                            } else {
+                                swal("Disculpa quipes pero no ", data.mensaje,"error");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+
+                }
+            );
+        })
+    </script>
+}

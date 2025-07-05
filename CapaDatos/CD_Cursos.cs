@@ -126,5 +126,53 @@ namespace CapaDatos
             return resultado;
         }
         #endregion
+
+        #region
+        public Cursos Listar_MejorCurso()
+        {
+            Cursos mejorCurso = null;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    oconexion.Open();
+                    string query = @"SELECT TOP 1 
+                                cu.Carrera_Id, 
+                                ca.Nombre_Carrera, 
+                                COUNT(*) AS TotalCursos
+                            FROM cursos cu
+                            INNER JOIN carreras ca ON cu.Carrera_Id = ca.Id_Carrera
+                            GROUP BY cu.Carrera_Id, ca.Nombre_Carrera
+                            ORDER BY TotalCursos DESC";
+
+                    SqlCommand cmd = new SqlCommand(query, oconexion);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            mejorCurso = new Cursos()
+                            {
+                                Carrera_Id = new Carreras
+                                {
+                                    Id_Carrera = Convert.ToInt32(reader["Carrera_Id"]),
+                                    Nombre_Carrera = reader["Nombre_Carrera"].ToString()
+                                },
+                                TotalVeces = Convert.ToInt32(reader["TotalCursos"])
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mejorCurso = new Cursos
+                {
+                    Nombre_Curso = "Error: " + ex.Message
+                };
+            }
+
+            return mejorCurso;
+        }
+        #endregion
     }
 }

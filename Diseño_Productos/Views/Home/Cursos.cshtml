@@ -60,10 +60,6 @@
                         <input type="text" class="form-control" id="txtdescripcion" placeholder="Ingresa la descripcion" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Codigo del curso</label>
-                        <input type="text" class="form-control" id="txtcodigo" placeholder="Ingresa el codigo del curso" autocomplete="off">
-                    </div>
-                    <div class="col-sm-6">
                         <label for="exampleFormControlInput1" class="form-label">Creditos</label>
                         <input type="number" class="form-control" id="txtcredito" placeholder="Ingresa tus apellidos" autocomplete="off">
                     </div>
@@ -110,14 +106,22 @@
         });
 
         //FUNCION PARA ABRIR EL MODAL DE LOS CURSOS
-        function abrirModalCursos() {
+        function abrirModalCursos(formato_json) {
             $('#mostrarError').hide();
             $("#txtnombre").val("");
             $("#txtdescripcion").val("");
             $("#txtcredito").val(0);
             $("#cboactivo_Curso").val(1);
             $("#cbocarrera").val(0);
-            $("#cbocodigo").val(0);
+            //si anteriormente se intento enviar informacion pero paso algo entonces este seguira con esa informacion
+            if (formato_json != null) {
+                $("#txtid").val(formato_json.Id_Curso);
+                $("#txtnombre").val(formato_json.Nombre_Curso);
+                $("#txtdescripcion").val(formato_json.Descripcion_Curso);
+                $("#txtcredito").val(formato_json.Creditos);
+                $("#cboactivo").val(formato_json.Activo_Curso == true ? 1 : 0);
+                $("#cborol").val(formato_json.Carrera_Id.Id_Carrera);
+            }
             $("#forModalCursos").modal("show");
         }
 
@@ -158,7 +162,12 @@
                 { "data": "Carrera_Id.Nombre_Carrera" },
                 { "data": "Nombre_Curso" },
                 { "data": "Descripcion_Curso" },
-                { "data": "Codigo_Curso" },
+                {
+                    "data": "Codigo_Curso",
+                    "render": function (data, type, row) {
+                        return data ? data : "<i>No asignado</i>";
+                    } 
+                },
                 { "data": "Creditos" },
                 {
                   "data": "Activo_Curso", "render": function (valor) {
@@ -195,7 +204,6 @@
                 Descripcion_Curso: $("#txtdescripcion").val(),
                 Id_Curso: parseInt($("#txtid").val()),
                 Creditos: parseInt($("#txtcredito").val()),
-                Codigo_Curso: $("#txtcodigo").val(),
                 Nombre_Curso: $("#txtnombre").val()
             }
             //Ver el ajax que tengo de los usuarios al momento de guardarlo
@@ -215,7 +223,8 @@
                             tabladata.row.add(Cursos).draw(false);
                             console.log(data.resultado)
                             tabladata.ajax.reload(null, false);
-                            $("#forModal").modal("hide");
+                            $("#forModalCursos").modal("hide");
+                            location.reload();
                         } else {
                             $('#mostrarError').text(data.mensaje);
                             $('#mostrarError').show();
@@ -287,6 +296,14 @@
 
                 }
             );
+        })
+        //PARA EL BOTON DE EDITAR ALGUN USUARIO
+        $("#tabla tbody").on('click', '.btn-editar', function () {
+            fila_selec = $(this).closest("tr");
+            datos = tabladata.rows(fila_selec).data()[0];
+            console.log(datos);
+            abrirModalCursos(datos);
+
         })
     </script>
 }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CD_Asignacion_D_C.cs" />
     <Compile Include="CD_Carreras.cs" />
     <Compile Include="CD_Cursos.cs" />
     <Compile Include="CD_Dashboard.cs" />

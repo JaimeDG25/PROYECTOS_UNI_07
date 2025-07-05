@@ -110,6 +110,10 @@
     color: red;
 }
 
+.secciones{
+    color:red !important;
+}
+
 body {
     margin: 0;
     font-family: var(--bs-body-font-family);
@@ -12631,6 +12635,7 @@ body {
 
                 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
                     font-size: 0.9rem;
+                    color: red;
                 }
 
                 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-sidenav-collapse-arrow {

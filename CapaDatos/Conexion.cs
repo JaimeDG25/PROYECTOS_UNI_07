@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 namespace CapaDatos
 {
-    internal class Conexion
+    public class Conexion
     {
         public static string cn = ConfigurationManager.ConnectionStrings["cadena"].ToString();
     }

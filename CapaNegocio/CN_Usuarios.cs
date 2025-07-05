@@ -12,16 +12,14 @@ namespace CapaNegocio
     {
         private CD_Usuarios objeto_cn_usuarios = new CD_Usuarios();
 
-        #region FUNCION PARA LISTAR USUARIOS EN NEGOCIO
-        //ESTA FUNCION ES PARA LISTA LOS USUARIOS (Y DEMOSTRAR QUE TENEMOS CONEXIN A LA BASE DE DATOS
+        #region METODO PARA LISTAR USUARIOS EN NEGOCIO
         public List<Usuarios> Listar()
         {
             return objeto_cn_usuarios.Listar();
         }
         #endregion
 
-        #region FUNCION PARA REGISTRAR USUARIOS EN NEGOCIO
-        //ESTA FUNCION SERVIRA PARA AGREGAR USUARIOS (SIENDO EL ADMINISTRADOR)
+        #region METODO PARA REGISTRAR USUARIOS EN NEGOCIO
         public int Registrar(Usuarios obj_user_register, out string mensaje_registrar)
         {
             mensaje_registrar = string.Empty;
@@ -68,16 +66,14 @@ namespace CapaNegocio
         }
         #endregion
 
-        #region FUNCION PARA ELIMINAR USUARIOS EN NEGOCIO
-        //ESTA FUNCION SERVIRA PARA ELIMINAR USUARIOS
+        #region METODO PARA ELIMINAR USUARIOS EN NEGOCIO
         public bool Eliminar(int id, out string mensaje_eliminar)
         {
             return objeto_cn_usuarios.Eliminar(id, out mensaje_eliminar);
         }
         #endregion
 
-        #region FUNCION PARA EDITAR USUARIOS EN NEGOCIO
-        //ESTA FUNCION SERVIRA PARA EDITAR USUARIOS
+        #region METODO PARA EDITAR USUARIOS EN NEGOCIO
         public bool Editar(Usuarios obj_user_edit, out string mensaje_editar)
         {
             mensaje_editar = string.Empty;

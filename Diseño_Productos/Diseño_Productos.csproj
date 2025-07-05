@@ -530,6 +530,7 @@
     <Content Include="Views\Prueba\Index.cshtml" />
     <Content Include="Views\Home\Cursos.cshtml" />
     <Content Include="Views\Home\Estudiantes.cshtml" />
+    <Content Include="Views\Home\Asignacion_D_C.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

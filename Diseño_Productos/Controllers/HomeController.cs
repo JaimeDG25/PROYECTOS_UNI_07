@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CapaEntidades;
 using CapaNegocio;
+using Microsoft.Win32;
 namespace Diseño_Productos.Controllers
 {
     [Authorize]
@@ -28,6 +29,26 @@ namespace Diseño_Productos.Controllers
         {
             Dashboard dashboard = new CN_Dashboard().Total_Dashboard_CN();
             return Json(new { respuesta = dashboard }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult Enviar_Correo(Mensaje registrado)
+        {
+            string dashboard = "Mensaje de correo enviado a: " + registrado.correo
+                       + ", asunto: " + registrado.asunto
+                       + ", mensaje: " + registrado.mensaje;
+            
+            bool enviado = CN_Recurso.EnviarCorreo(registrado.correo, registrado.asunto, registrado.mensaje);
+            if (!enviado)
+            {
+                dashboard = "Error al enviar el correo.";
+            }
+            return Json(new { resultado = dashboard }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult MostrarMejorCurso()
+        {
+            var curso = new CN_Cursos().Listar_MejorCurso();
+            return View(curso);
         }
         #endregion
 
@@ -138,7 +159,6 @@ namespace Diseño_Productos.Controllers
             }
             return Json(new { jeason_lista = olista, saludo = saludo }, JsonRequestBehavior.AllowGet);
         }
-        #endregion
         [HttpPost]
         public JsonResult Registrar_Estudiante(Estudiantes registrado) //Ese "registrado" debe ser igual
         {
@@ -150,8 +170,7 @@ namespace Diseño_Productos.Controllers
             }
             else
             {
-                resultado = null;
-                //resultado = new CN_Estudiantes().Editar(registrado, out mensaje);
+                resultado = new CN_Estudiantes().Editar(registrado, out mensaje);
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
@@ -163,7 +182,42 @@ namespace Diseño_Productos.Controllers
             respuesta = new CN_Estudiantes().Eliminar(id, out mensaje);
             return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
+        #endregion
 
+        #region Aca tenemos todo lo que se debe hacer para la tabla Asignacion_Docentes_Cursos
+        public ActionResult Asignacion_D_C()
+        {
+            return View();
+        }
+        [HttpGet]
+        public JsonResult Listar_Asignacion_D_C()
+        {
+            List<Asignacion_D_C> olista = new List<Asignacion_D_C>();
+            olista = new CN_Asignacion_D_C().Listar();
+            string saludo = "Un saludo de agradecimiento";
+            if (olista == null || !olista.Any())
+            {
+                return Json("Hola Mundoss", JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { jeason_lista = olista, saludo = saludo }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult Guardar_Asignacion(Asignacion_D_C registrado) //Ese "registrado" debe ser igual
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (registrado.Id_Asignacion == 0)
+            {
+                resultado = new CN_Asignacion_D_C().Registrar(registrado, out mensaje);
+            }
+            else
+            {
+                resultado = null;
+                //resultado = new CN_Usuarios().Editar(registrado, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         #region Aca tenemos todo lo que se debe hacer para la tabla Carreras
         public ActionResult Carreras()

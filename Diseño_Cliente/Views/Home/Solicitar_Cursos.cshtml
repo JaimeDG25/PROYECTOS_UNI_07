@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Solicitar_Cursos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Solicitar_Cursos</h2>
+<section class="row" aria-labelledby="aspnetTitle">
+    <h1 id="title">UTP + CLASS</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-warning btn-md">Learn more &raquo;</a></p>
+</section>
+<table class="table table-bordered" id="tablaCursos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Créditos</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@model List<CapaEntidades.Cursos>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Créditos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var curso in Model)
+        {
+            <tr>
+                <td>@curso.Codigo_Curso</td>
+                <td>@curso.Nombre_Curso</td>
+                <td>@curso.Descripcion_Curso</td>
+                <td>@curso.Creditos</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        //CONSULTA AJAX PARA EL METODO LISTAR ESTUDIANTES DE MI CONTROLADOR HOME
+        jQuery.ajax({
+            url: '@Url.Action("Listar_Solicitar_Cursos", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (datos) {
+                console.log("Todos los datos que tengo recolectados");
+                console.log(datos);
+
+                const cursos = datos.jeason_lista;
+                let tabla = $("#tablaCursos tbody");
+                tabla.empty(); // limpia la tabla por si se vuelve a cargar
+
+                cursos.forEach(curso => {
+                    let fila = `<tr>
+                                <td>${curso.Id_Curso}</td>
+                                <td>${curso.Codigo_Curso}</td>
+                                <td>${curso.Nombre_Curso}</td>
+                                <td>${curso.Descripcion_Curso}</td>
+                                <td>${curso.Creditos}</td>
+                                </tr> `;
+                    tabla.append(fila);
+                });
+            }
+        });
+
+    </script>
+}

@@ -16,7 +16,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-success" onclick="abrirModal()">
+                <button type="button" class="btn btn-success" onclick="abrirModalEstudiante()">
                     Agregar nuevo usuario
                 </button>
             </div>
@@ -89,13 +89,14 @@
     <script>
         console.log("Script del estudiante")
         //FUNCTION PARA PODER ABRIR SOLO EL MODAL
-        function abrirModal(formato_json) {
+        function abrirModalEstudiante(formato_json) {
             //empezando por abrir el modal con todos los valores vacios por defeceto
             $('#mostrarError').hide();
             $("#txtid").val(0)
             $("#txtnombre").val("");
             $("#txtapellido").val("");
             $("#txtcorreo").val("");
+            $("#txtdni").val("");
             $("#cboactivo").val(1);
             //si anteriormente se intento enviar informacion pero paso algo entonces este seguira con esa informacion
             if (formato_json != null) {
@@ -104,11 +105,8 @@
                 $("#txtapellido").val(formato_json.Apellido_Estudiante);
                 $("#txtcorreo").val(formato_json.Correo_Electronico_Estudiante);
                 $("#cboactivo").val(formato_json.Activo == true ? 1 : 0);
-                $("#cborol").val(formato_json.Carrera_Id_D.Id_Carrera);
-                console.log("Dato antes de editar")
-                console.log("Tu nombre es es :" + formato_json.Nombre_Estudiante);
-                console.log("Tu id es :" + formato_json.Id_Estudiante);
-                console.log("Tu id del rol es :" + formato_json.Carrera_Id_D.Id_Carrera);
+                $("#txtdni").val(formato_json.DNI_Estudiante);
+                $("#cborol").val(formato_json.Carrera_Id.Id_Carrera);
             }
             $("#forModal").modal("show");
         }
@@ -256,14 +254,7 @@
                 }
             });
         }
-        //FUNCION PARA EDITAR ESTUDIANTE
-        $("#tabla tbody").on('click', '.btn-editar', function () {
-            fila_selec = $(this).closest("tr");
-            datos = tabladata.rows(fila_selec).data()[0];
-            console.log(datos);
-            abrirModal(datos);
 
-        })
         //FUNCION PARA ELIMINAR CURSOS
         $("#tabla tbody").on('click', '.btn-eliminar', function () {
             var estudiante_selec = $(this).closest("tr");
@@ -302,6 +293,15 @@
 
                 }
             );
+        })
+
+        //FUNCION PARA EDITAR ESTUDIANTE
+        $("#tabla tbody").on('click', '.btn-editar', function () {
+            fila_selec = $(this).closest("tr");
+            datos = tabladata.rows(fila_selec).data()[0];
+            console.log(datos);
+            abrirModalEstudiante(datos);
+
         })
     </script>    
 }

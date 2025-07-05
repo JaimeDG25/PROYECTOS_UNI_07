@@ -33,12 +33,13 @@ namespace CapaNegocio
             {
                 mensaje_registrar = "La descripcion del curso no puede ser vacio";
             }
-            else if (string.IsNullOrEmpty(obj_curso_register.Codigo_Curso) || string.IsNullOrWhiteSpace(obj_curso_register.Codigo_Curso))
-            {
-                mensaje_registrar = "El codigo del cuso no puede ser vacio";
-            }
+            //else if (string.IsNullOrEmpty(obj_curso_register.Codigo_Curso) || string.IsNullOrWhiteSpace(obj_curso_register.Codigo_Curso))
+            //{
+            //    mensaje_registrar = "El codigo del cuso no puede ser vacio";
+            //}
             if (string.IsNullOrEmpty(mensaje_registrar))
             {
+                obj_curso_register.Codigo_Curso = CN_Recurso.GenerarCodigo(obj_curso_register.Carrera_Id.Nombre_Carrera);
                 return objeto_cn_cursos.Registrar(obj_curso_register, out mensaje_registrar);
                 
             }
@@ -59,5 +60,9 @@ namespace CapaNegocio
         #region FUNCION PARA EDITAR CURSOS EN NEGOCIO
         #endregion
 
+        public Cursos Listar_MejorCurso()
+        {
+            return objeto_cn_cursos.Listar_MejorCurso();
+        }
     }
 }

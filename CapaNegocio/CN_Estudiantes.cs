@@ -64,11 +64,40 @@ namespace CapaNegocio
         #endregion
 
         #region METODO PARA ELIMINAR ESTUDIANTES EN NEGOCIO
-        //ESTA FUNCION SERVIRA PARA ELIMINAR USUARIOS
+        //ESTA FUNCION SERVIRA PARA ELIMINAR EstudianteS
         public bool Eliminar(int id, out string mensaje_eliminar)
         {
             return objeto_cn_estudiantes.Eliminar(id, out mensaje_eliminar);
         }
         #endregion
+
+        #region METODO PARA EDITAR ESTUDIANTES EN NEGOCIO
+        public bool Editar(Estudiantes obj_estudiante_register, out string mensaje_editar)
+        {
+            mensaje_editar = string.Empty;
+
+            if (string.IsNullOrEmpty(obj_estudiante_register.Nombre_Estudiante) || string.IsNullOrWhiteSpace(obj_estudiante_register.Nombre_Estudiante))
+            {
+                mensaje_editar = "El nombre del Estudiante no puede ser vacío";
+            }
+            else if (string.IsNullOrEmpty(obj_estudiante_register.Apellido_Estudiante) || string.IsNullOrWhiteSpace(obj_estudiante_register.Apellido_Estudiante))
+            {
+                mensaje_editar = "El apellido del Estudiante no puede ser vacío";
+            }
+            else if (string.IsNullOrEmpty(obj_estudiante_register.Correo_Electronico_Estudiante) || string.IsNullOrWhiteSpace(obj_estudiante_register.Correo_Electronico_Estudiante))
+            {
+                mensaje_editar = "El correo del Estudiante no puede ser vacío";
+            }
+
+            if (string.IsNullOrEmpty(mensaje_editar))
+            {
+                return objeto_cn_estudiantes.Editar(obj_estudiante_register, out mensaje_editar);
+            }
+            else
+            {
+                return false;
+            }
+            #endregion
+        }
     }
 }

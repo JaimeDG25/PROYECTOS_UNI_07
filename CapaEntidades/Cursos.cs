@@ -15,5 +15,6 @@ namespace CapaEntidades
         public int Creditos { get; set; }
         public Carreras Carrera_Id { get; set; }
         public bool Activo_Curso { get; set; }
+        public int TotalVeces { get; set; }
     }
 }
