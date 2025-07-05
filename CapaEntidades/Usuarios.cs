@@ -15,6 +15,7 @@ namespace CapaEntidades
         public Roles Rol_Id_D { get; set; }
         public int Rol_Id { get; set; }
         public string Clave {  get; set; }
+        public string Completo { get; set; }
         public bool Activo { get; set; }
     }
 }

@@ -90,7 +90,8 @@
                 // Carga los datos manualmente si es necesario
                 tabladata.clear().rows.add(datos.jeason_lista).draw();
                 console.log("DATOS RECOLECTADOS DE ASIGNACION");
-                console.log(datos);
+                console.log(datos.jeason_lista);
+                console.log(datos.jeason_lista[0].Asistente_Id);
             }
         });
 
@@ -102,14 +103,20 @@
                 url: '@Url.Action("Listar_Asignacion_D_C", "Home")',
                 type: "GET",
                 dataType: "json",
-                success: function (datas) {
-                    //tabladata.clear().rows.add(data.creatina).draw();
-                    //console.log(datas.Nombre_Usuario)
+                dataSrc: function (json) {
+                    // Combinar Nombre + Apellido antes de enviar a columnas
+                    json.jeason_lista.forEach(function (item) {
+                        if (item.Asistente_Id) {
+                            item.Asistente_Id.Completo =
+                                item.Asistente_Id.Nombre_Usuario + " " + item.Asistente_Id.Apellido_Usuario;
+                        }
+                    });
+                    return json.jeason_lista;
                 }
             },
             "columns": [
                 { "data": "Asistente_Id.Id_Usuario" },
-                { "data": "Asistente_Id.Nombre_Usuario" },
+                { "data": "Asistente_Id.Completo" },
                 { "data": "Curso_Id.Id_Curso" },
                 { "data": "Curso_Id.Nombre_Curso" },
                 { "data": "Curso_Id.Descripcion_Curso" },
@@ -142,7 +149,8 @@
                 console.log(data)
                 $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboasistentes");
                 $.each(data.jeason_lista, function (index, valor) {
-                    $("<option>").attr({ "value": valor.Id_Usuario }).text(valor.Nombre_Usuario).appendTo("#cboasistentes");
+                    let nombreCompleto = valor.Nombre_Usuario + " " + valor.Apellido_Usuario;
+                    $("<option>").attr({ "value": valor.Id_Usuario }).text(value.nombreCompleto).appendTo("#cboasistentes");
                 })
             },
             error: function (error) {
@@ -190,24 +198,24 @@
                     Nombre_Curso: $("#cbocursos option:selected").text()
                 },
                 Asistente_Id: {
-                    Id_Curso: parseInt($("#cboasistentes").val()),
-                    Nombre_Curso: $("#cboasistentes option:selected").text()
+                    Id_Asistente: parseInt($("#cboasistentes").val()),
+                    Nombre_Asistente: $("#cboasistentes option:selected").text()
                 },
-                Id_Asistente: parseInt($("#txtid").val()),
+                Id_Asignacion: parseInt($("#txtid").val()),
             }
             console.log(Asignacion);
         }
         function guardar() {
             var Asignaciones = {
                 Curso_Id: {
-                    Id_Curso: parseInt($("#cbocarrera").val()),
+                    Id_Curso: parseInt($("#cbocursos").val()),
                     Nombre_Curso: $("#cbocursos option:selected").text()
                 },
                 Asistente_Id: {
-                    Id_Curso: parseInt($("#cbocarrera").val()),
-                    Nombre_Curso: $("#cboasistentes option:selected").text()
+                    Id_Usuario: parseInt($("#cboasistentes").val()),
+                    Nombre_Asistente: $("#cboasistentes option:selected").text()
                 },
-                Id_Asistente: parseInt($("#txtid").val()),
+                Id_Asignacion: parseInt($("#txtid").val()),
             }
             console.log(Asignaciones);
             jQuery.ajax({

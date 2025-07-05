@@ -22,7 +22,7 @@ namespace CapaDatos
                     oconexion.Open();
 
                     Console.WriteLine("Conexión exitosa a la base de datos.");
-                    String query = @"select a.Id_Asignacion, a.Asistente_Id,u.Nombre_Usuario+' '+u.Apellido_Usuario as NombreCompleto, 
+                    String query = @"select a.Id_Asignacion, a.Asistente_Id,u.Nombre_Usuario,u.Apellido_Usuario, 
                                     a.Curso_Id, c.Nombre_Curso, c.Descripcion_Curso, c.Creditos,c.Codigo_Curso
                                     from asignacion_d_c a
                                     inner join cursos c ON c.Id_Curso=a.Curso_Id
@@ -50,7 +50,9 @@ namespace CapaDatos
                                     Asistente_Id = new Usuarios
                                     {
                                         Id_Usuario = Convert.ToInt32(reader["Asistente_Id"]),
-                                        Nombre_Usuario = reader["NombreCompleto"].ToString()
+                                        Nombre_Usuario= reader["Nombre_Usuario"].ToString(),
+                                        Apellido_Usuario = reader["Apellido_Usuario"].ToString(),
+                                        Completo = reader["Nombre_Usuario"].ToString() + " " + reader["Apellido_Usuario"].ToString()
                                     },
                                 }
                             );
