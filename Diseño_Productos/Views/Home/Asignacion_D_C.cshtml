@@ -26,13 +26,15 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Asistente Id</th>
+                    <th>Asistente Isd</th>
                     <th>Nombre Completo</th>
                     <th>Curso Id</th>
                     <th>Nombre del Cursos</th>
                     <th>Descripcion</th>
                     <th>Codigo</th>
-                    <th>Creditos</th>
+                    <th>Dia</th>
+                    <th>Horario inicio</th>
+                    <th>Horario fin</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -53,7 +55,6 @@
             <div class="modal-body" id="modal-body">
                 <div class="row g-2">
                     <input id="txtid" type="number" value="0" />
-                    
                     <div class="col-sm-6">
                         <label for="cboasistentes" class="form-label">Lista de Asistentes</label>
                         <select id="cboasistentes" class="form-select">
@@ -63,6 +64,21 @@
                         <label for="cbocursos" class="form-label">Lista de Cursos</label>
                         <select id="cbocursos" class="form-select">
                         </select>
+                    </div>
+                    <div class="col-sm-6 mt-3">
+                        <label for="txtdia" class="form-label">Día de Asignación</label>
+                        <input id="txtdia" type="text" class="form-control" placeholder="Ej: Lunes, Martes, etc." />
+                    </div>
+                    <!-- Hora de inicio -->
+                    <div class="col-sm-3 mt-3">
+                        <label for="txthorainicio" class="form-label">Hora de Inicio</label>
+                        <input id="txthorainicio" type="time" class="form-control" />
+                    </div>
+
+                    <!-- Hora de fin -->
+                    <div class="col-sm-3 mt-3">
+                        <label for="txthorafin" class="form-label">Hora de Fin</label>
+                        <input id="txthorafin" type="time" class="form-control" />
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -88,10 +104,9 @@
             contentType: "application/json; charset=utf-8",
             success: function (datos) {
                 // Carga los datos manualmente si es necesario
-                tabladata.clear().rows.add(datos.jeason_lista).draw();
+                //tabladata.clear().rows.add(datos.jeason_lista).draw();
                 console.log("DATOS RECOLECTADOS DE ASIGNACION");
-                console.log(datos.jeason_lista);
-                console.log(datos.jeason_lista[0].Asistente_Id);
+                console.log(datos);
             }
         });
 
@@ -121,15 +136,16 @@
                 { "data": "Curso_Id.Nombre_Curso" },
                 { "data": "Curso_Id.Descripcion_Curso" },
                 { "data": "Curso_Id.Codigo_Curso" },
-                { "data": "Curso_Id.Creditos" },
-
+                { "data": "Dia_Asignacion" },
+                { "data": "Horario_Inicio_Asignacion" },
+                { "data": "Horario_Fin_Asignacion" },
                 {
                     'defaultContent':
                         '<button type="button" class="btn btn-primary btn-editar btn-sm"><i class="fas fa-pen me-1"></i></button>' +
                         '<button type="button" class="btn btn-danger btn-eliminar btn-sm ms-2"><i class="fas fa-trash me-1"></i></button>',
-                    'ordarable':false,
+                    'orderable': false,
                     'searchable': false,
-                    'width':'90px'
+                    'width': '90px'
                 }
             ],
             "language": {
@@ -145,12 +161,12 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                console.log("Listado de Asignacion")
+                console.log("Listado de Usuarios")
                 console.log(data)
                 $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboasistentes");
                 $.each(data.jeason_lista, function (index, valor) {
                     let nombreCompleto = valor.Nombre_Usuario + " " + valor.Apellido_Usuario;
-                    $("<option>").attr({ "value": valor.Id_Usuario }).text(value.nombreCompleto).appendTo("#cboasistentes");
+                    $("<option>").attr({ "value": valor.Id_Usuario }).text(nombreCompleto).appendTo("#cboasistentes");
                 })
             },
             error: function (error) {
@@ -166,7 +182,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                console.log("Listado de Asignacion")
+                console.log("Listado de Cursos")
                 console.log(data)
                 $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocursos");
                 $.each(data.jeason_lista, function (index, valor) {
@@ -185,13 +201,13 @@
             $("#cbocursos").val(0);
             if (formato_json != null) {
                 $("#txtid").val(formato_json.Id_Asignacion);
-                $("#cboasistentes").val(formato_json.Activo_Curso == true ? 1 : 0);
-                $("#cbocursos").val(formato_json.Carrera_Id.Id_Carrera);
+                $("#cboasistentes").val(formato_json.Asistente_Id.Completo == true ? 1 : 0);
+                $("#cbocursos").val(formato_json.Curso_Id.Id_Curso);
             }
             $("#forModalCursos").modal("show");
         }
         //FUNCION PARA ABRIR EL BOTON REGISTRAR DE LA ASIGNACION
-        function guardartemporal(){
+        function guardartemporal() {
             var Asignacion = {
                 Curso_Id: {
                     Id_Curso: parseInt($("#cbocursos").val()),
@@ -202,7 +218,12 @@
                     Nombre_Asistente: $("#cboasistentes option:selected").text()
                 },
                 Id_Asignacion: parseInt($("#txtid").val()),
-            }
+
+                Dia_Asignacion: $("#txtdia").val(),
+                Horario_Inicio_Asignacion: $("#txthorainicio").val(),
+                Horario_Fin_Asignacion: $("#txthorafin").val()
+            };
+
             console.log(Asignacion);
         }
         function guardar() {
@@ -216,7 +237,10 @@
                     Nombre_Asistente: $("#cboasistentes option:selected").text()
                 },
                 Id_Asignacion: parseInt($("#txtid").val()),
-            }
+                Dia_Asignacion: $("#txtdia").val(),
+                Horario_Inicio_Asignacion: $("#txthorainicio").val(),
+                Horario_Fin_Asignacion: $("#txthorafin").val()
+            };
             console.log(Asignaciones);
             jQuery.ajax({
                 url: '@Url.Action("Guardar_Asignacion", "Home")',

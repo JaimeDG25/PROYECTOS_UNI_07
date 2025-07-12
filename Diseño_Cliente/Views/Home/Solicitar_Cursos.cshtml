@@ -10,42 +10,48 @@
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="https://asp.net" class="btn btn-warning btn-md">Learn more &raquo;</a></p>
 </section>
-<table class="table table-bordered" id="tablaCursos">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Créditos</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-@model List<CapaEntidades.Cursos>
 
+@model List<CapaEntidades.Asignacion_D_C>
 <table class="table">
     <thead>
         <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Créditos</th>
+            <th>Curso</th>
+            <th>Descripcion</th>
+            <th>Asistente</th>
+            <th>Dias habilitados</th>
+            <th>Horario</th>
+            <th>Seleccionar</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var curso in Model)
+        @foreach (var asignacion in Model)
         {
             <tr>
-                <td>@curso.Codigo_Curso</td>
-                <td>@curso.Nombre_Curso</td>
-                <td>@curso.Descripcion_Curso</td>
-                <td>@curso.Creditos</td>
+                <td>@asignacion.Curso_Id.Nombre_Curso</td>
+                <td>@asignacion.Curso_Id.Descripcion_Curso</td>
+                <td>@asignacion.Asistente_Id.Nombre_Usuario @asignacion.Asistente_Id.Apellido_Usuario</td>
+                <td>@asignacion.Dia_Asignacion</td>
+                <td>@asignacion.Horario_Inicio_Asignacion - @asignacion.Horario_Fin_Asignacion</td>
+                <td>
+                    <button class="btnSeleccionar">Seleccionar</button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
+<table class="table table-bordered" id="tablaCursos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Curso</th>
+            <th>Asistente</th>
+            <th>Dias habilitados</th>
+            <th>Horario de inicio</th>
+            <th>Horario de fin</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 @section scripts{
     <script>
         //CONSULTA AJAX PARA EL METODO LISTAR ESTUDIANTES DE MI CONTROLADOR HOME
@@ -57,23 +63,44 @@
             success: function (datos) {
                 console.log("Todos los datos que tengo recolectados");
                 console.log(datos);
-
-                const cursos = datos.jeason_lista;
+                const asignaciones = datos.jeason_lista;
                 let tabla = $("#tablaCursos tbody");
                 tabla.empty(); // limpia la tabla por si se vuelve a cargar
-
-                cursos.forEach(curso => {
+                asignaciones.forEach(asignacion => {
                     let fila = `<tr>
-                                <td>${curso.Id_Curso}</td>
-                                <td>${curso.Codigo_Curso}</td>
-                                <td>${curso.Nombre_Curso}</td>
-                                <td>${curso.Descripcion_Curso}</td>
-                                <td>${curso.Creditos}</td>
+                                <td>${asignacion.Id_Asignacion}</td>
+                                <td>${asignacion.Curso_Id.Nombre_Curso}</td>
+                                <td>${asignacion.Asistente_Id.Nombre_Usuario}</td>
+                                <td>${asignacion.Dia_Asignacion}</td>
+                                <td>${asignacion.Horario_Inicio_Asignacion}</td>
+                                <td>${asignacion.Horario_Fin_Asignacion}</td>
                                 </tr> `;
                     tabla.append(fila);
                 });
             }
         });
+        $(document).ready(function () {
+            // Al hacer clic en cualquier botón con clase 'btnSeleccionar'
+            $(document).on('click', '.btnSeleccionar', function () {
+                // Obtenemos la fila (tr) donde se hizo clic
+                let fila = $(this).closest('tr');
 
+                // Obtenemos las celdas (td) de esa fila
+                let celdas = fila.find('td');
+
+                // Creamos un diccionario con los valores de las celdas
+                let datosFila = {
+                    curso: celdas.eq(0).text().trim(),
+                    descripcion: celdas.eq(1).text().trim(),
+                    asistente: celdas.eq(2).text().trim(),
+                    dias: celdas.eq(3).text().trim(),
+                    horario: celdas.eq(4).text().trim()
+                };
+
+                // Mostramos el diccionario en consola
+                console.log("Datos seleccionados:");
+                console.log(datosFila);
+            });
+        });
     </script>
 }

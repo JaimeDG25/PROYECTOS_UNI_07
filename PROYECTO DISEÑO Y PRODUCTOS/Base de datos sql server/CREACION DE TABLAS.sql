@@ -50,20 +50,26 @@ CREATE TABLE cursos (
     FOREIGN KEY (Carrera_Id) REFERENCES carreras(Id_Carrera)
 );
 -- Tabla inscripciones
-CREATE TABLE inscripciones (
+CREATE TABLE inscripciones_e_c (
     Id_Inscripcion INT PRIMARY KEY,
     Estudiante_Id INT,
-    Curso_Id INT,
-    Fecha_Inscripcion DATE,
+    Asignacion_Id INT,
+    Fecha_Inscripcion datetime default getdate(),
     FOREIGN KEY (Estudiante_Id) REFERENCES estudiantes(Id_Estudiante),
-    FOREIGN KEY (Curso_Id) REFERENCES cursos(Id_Curso)
+    FOREIGN KEY (Asignacion_Id) REFERENCES asignacion_d_c(Id_Asignacion)
 );
-
+select * from inscripciones_e_c
+sp_help inscripciones_e_c
 -- Tabla asignacion_d_c
 CREATE TABLE asignacion_d_c (
     Id_Asignacion INT PRIMARY KEY,
     Curso_Id INT,
     Asistente_Id INT,
+	Dia_Asignacion varchar(20),
+	Hora_Inicio_Asignacion TIME,
+	Hora_Fin_Asignacion TIME,
     FOREIGN KEY (Curso_Id) REFERENCES cursos(Id_Curso),
     FOREIGN KEY (Asistente_Id) REFERENCES usuarios(Id_Usuario)
 );
+select * from asignacion_d_c
+sp_help asignacion_d_c

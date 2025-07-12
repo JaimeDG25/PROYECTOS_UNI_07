@@ -46,6 +46,7 @@
     <Compile Include="CN_Cursos.cs" />
     <Compile Include="CN_Dashboard.cs" />
     <Compile Include="CN_Estudiantes.cs" />
+    <Compile Include="CN_Inscripcion_E_C.cs" />
     <Compile Include="CN_Recurso.cs" />
     <Compile Include="CN_Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

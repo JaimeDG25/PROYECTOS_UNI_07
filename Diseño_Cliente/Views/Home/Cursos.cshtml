@@ -5,4 +5,60 @@
 }
 
 <h2>Cursos</h2>
+<input type="text" id="idestudiante" name="name" value="@Session["IdEstudiante"]" />
 
+<h3>hola</h3>
+<table class="table table-bordered" id="tablaCursos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Estudiante</th>
+            <th>Estudiante apellido</th>
+            <th>Asistente</th>
+            <th>Asistente apellido</th>
+            <th>Curso</th>
+            <th>Dias habilitados</th>
+            <th>Horario de inicio</th>
+            <th>Horario de fin</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section scripts{
+    <script>
+        let id = $("#idestudiante").val()
+        console.log("ID del estudiante:", id);
+        //CONSULTA AJAX PARA EL METODO LISTAR ASIGNACION EN CONSOLE
+        jQuery.ajax({
+            url: '@Url.Action("Listar_Inscripciones", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: { estudianteId: id },
+            success: function (datos) {
+                // Carga los datos manualmente si es necesario
+                //tabladata.clear().rows.add(datos.jeason_lista).draw();
+                console.log("DATOS RECOLECTADOS DE LA INSCRIPCION");
+                console.log(datos);
+                const inscripciones = datos.jeason_lista;
+                let tabla = $("#tablaCursos tbody");
+                tabla.empty();
+                inscripciones.forEach(inscripciones => {
+                    let fila = `<tr>
+                        <td>${inscripciones.Id_Inscripcion}</td>
+                        <td>${inscripciones.Estudiante_Id.Nombre_Estudiante}</td>
+                        <td>${inscripciones.Estudiante_Id.Apellido_Estudiante}</td>
+                        <td>${inscripciones.Asignacion_Id.Asistente_Id.Nombre_Usuario}</td>
+                        <td>${inscripciones.Asignacion_Id.Asistente_Id.Apellido_Usuario}</td>
+                        <td>${inscripciones.Asignacion_Id.Curso_Id.Nombre_Curso}</td>
+                        <td>${inscripciones.Asignacion_Id.Dia_Asignacion}</td>
+                        <td>${inscripciones.Asignacion_Id.Horario_Inicio_Asignacion}</td>
+                        <td>${inscripciones.Asignacion_Id.Horario_Fin_Asignacion}</td>
+                        </tr> `;
+                    tabla.append(fila);
+                });
+            }
+        });
+
+    </script>
+}

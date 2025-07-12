@@ -16,7 +16,7 @@ namespace Diseño_Cliente
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Acceso", action = "Login_Cliente", id = UrlParameter.Optional }
             );
         }
     }

@@ -22,8 +22,13 @@ namespace CapaDatos
                     oconexion.Open();
 
                     Console.WriteLine("Conexión exitosa a la base de datos.");
-                    String query = @"select a.Id_Asignacion, a.Asistente_Id,u.Nombre_Usuario,u.Apellido_Usuario, 
-                                    a.Curso_Id, c.Nombre_Curso, c.Descripcion_Curso, c.Creditos,c.Codigo_Curso
+                    String query = @"select 
+                                    a.Id_Asignacion, 
+                                    a.Asistente_Id,
+                                    u.Nombre_Usuario,u.Apellido_Usuario, 
+                                    a.Curso_Id, 
+                                    c.Nombre_Curso, c.Descripcion_Curso, c.Creditos,c.Codigo_Curso,
+                                    a.Dia_Asignacion, a.Horario_Inicio_Asignacion, a.Horario_Fin_Asignacion
                                     from asignacion_d_c a
                                     inner join cursos c ON c.Id_Curso=a.Curso_Id
                                     inner join usuarios u ON u.Id_Usuario=a.Asistente_Id ";
@@ -39,6 +44,9 @@ namespace CapaDatos
                                 new Asignacion_D_C()
                                 {
                                     Id_Asignacion = Convert.ToInt32(reader["Id_Asignacion"]),
+                                    Dia_Asignacion = reader["Dia_Asignacion"].ToString(),
+                                    Horario_Inicio_Asignacion = TimeSpan.Parse(reader["Horario_Inicio_Asignacion"].ToString()).ToString(@"hh\:mm"),
+                                    Horario_Fin_Asignacion = TimeSpan.Parse(reader["Horario_Fin_Asignacion"].ToString()).ToString(@"hh\:mm"),
                                     Curso_Id = new Cursos
                                     {
                                         Id_Curso = Convert.ToInt32(reader["Curso_Id"]),
@@ -86,6 +94,9 @@ namespace CapaDatos
                     SqlCommand cmd = new SqlCommand("sp_RegistrarAsignacion_d_c", oconexion);
                     cmd.Parameters.AddWithValue("Curso_Id", obj.Curso_Id.Id_Curso);
                     cmd.Parameters.AddWithValue("Asistente_Id", obj.Asistente_Id.Id_Usuario);
+                    cmd.Parameters.AddWithValue("Dia_Asignacion", obj.Dia_Asignacion);
+                    cmd.Parameters.AddWithValue("Horario_Inicio_Asignacion", TimeSpan.Parse(obj.Horario_Inicio_Asignacion));
+                    cmd.Parameters.AddWithValue("Horario_Fin_Asignacion", TimeSpan.Parse(obj.Horario_Fin_Asignacion));
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
