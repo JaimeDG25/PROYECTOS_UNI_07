@@ -8,22 +8,9 @@
 <input type="text" id="idestudiante" name="name" value="@Session["IdEstudiante"]" />
 
 <h3>hola</h3>
-<table class="table table-bordered" id="tablaCursos">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Estudiante</th>
-            <th>Estudiante apellido</th>
-            <th>Asistente</th>
-            <th>Asistente apellido</th>
-            <th>Curso</th>
-            <th>Dias habilitados</th>
-            <th>Horario de inicio</th>
-            <th>Horario de fin</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="container my-4">
+    <div class="row g-4" id="contenedor"></div>
+</div>
 @section scripts{
     <script>
         let id = $("#idestudiante").val()
@@ -41,24 +28,39 @@
                 console.log("DATOS RECOLECTADOS DE LA INSCRIPCION");
                 console.log(datos);
                 const inscripciones = datos.jeason_lista;
-                let tabla = $("#tablaCursos tbody");
-                tabla.empty();
-                inscripciones.forEach(inscripciones => {
-                    let fila = `<tr>
-                        <td>${inscripciones.Id_Inscripcion}</td>
-                        <td>${inscripciones.Estudiante_Id.Nombre_Estudiante}</td>
-                        <td>${inscripciones.Estudiante_Id.Apellido_Estudiante}</td>
-                        <td>${inscripciones.Asignacion_Id.Asistente_Id.Nombre_Usuario}</td>
-                        <td>${inscripciones.Asignacion_Id.Asistente_Id.Apellido_Usuario}</td>
-                        <td>${inscripciones.Asignacion_Id.Curso_Id.Nombre_Curso}</td>
-                        <td>${inscripciones.Asignacion_Id.Dia_Asignacion}</td>
-                        <td>${inscripciones.Asignacion_Id.Horario_Inicio_Asignacion}</td>
-                        <td>${inscripciones.Asignacion_Id.Horario_Fin_Asignacion}</td>
-                        </tr> `;
-                    tabla.append(fila);
-                });
-            }
-        });
+                //let tabla = $("#tablaCursos tbody");
+                //tabla.empty();
+                const container = document.getElementById("contenedor");
+
+                inscripciones.forEach(inscripcion => {
+      const { Nombre_Usuario, Apellido_Usuario } = inscripcion.Asignacion_Id.Asistente_Id;
+      const { Nombre_Curso } = inscripcion.Asignacion_Id.Curso_Id;
+      const { Dia_Asignacion, Horario_Inicio_Asignacion, Horario_Fin_Asignacion } = inscripcion.Asignacion_Id;
+
+      const nombre_completo = `${Nombre_Usuario} ${Apellido_Usuario}`;
+      const imagenURL = "https://images.unsplash.com/photo-1663970206579-c157cba7edda?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI2fHx8ZW58MHx8fHx8" + encodeURIComponent(Nombre_Curso);
+
+      const card = `
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card shadow-sm h-100">
+            <img src="${imagenURL}" class="card-img-top" alt="${Nombre_Curso}">
+            <div class="card-body">
+              <span class="badge bg-primary">${Dia_Asignacion}</span>
+              <h5 class="card-title mt-3">${Nombre_Curso}</h5>
+              <p class="d-flex align-items-center card-text text-muted mb-2">
+                <svg class="me-1" xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h3.5" /><path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z" /></svg>
+                ${nombre_completo}
+              </p>
+              <div class="d-flex align-items-center text-secondary small">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-stopwatch"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 13a7 7 0 1 0 14 0a7 7 0 0 0 -14 0z" /><path d="M14.5 10.5l-2.5 2.5" /><path d="M17 8l1 -1" /><path d="M14 3h-4" /></svg>
+                ${Horario_Inicio_Asignacion} - ${Horario_Fin_Asignacion}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      container.innerHTML += card;
+    });
 
     </script>
 }
