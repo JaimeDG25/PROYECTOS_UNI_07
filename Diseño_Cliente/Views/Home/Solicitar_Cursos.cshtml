@@ -5,6 +5,7 @@
 }
 
 <h2>Solicitar_Cursos</h2>
+<input type="text" id="idestudiante" name="name" value="@Session["IdEstudiante"]" />
 <section class="row" aria-labelledby="aspnetTitle">
     <h1 id="title">UTP + CLASS</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
@@ -15,7 +16,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Curso</th>
+            <th>Cursos</th>
             <th>Descripcion</th>
             <th>Asistente</th>
             <th>Dias habilitados</th>
@@ -26,16 +27,19 @@
     <tbody>
         @foreach (var asignacion in Model)
         {
-            <tr>
-                <td>@asignacion.Curso_Id.Nombre_Curso</td>
-                <td>@asignacion.Curso_Id.Descripcion_Curso</td>
-                <td>@asignacion.Asistente_Id.Nombre_Usuario @asignacion.Asistente_Id.Apellido_Usuario</td>
-                <td>@asignacion.Dia_Asignacion</td>
-                <td>@asignacion.Horario_Inicio_Asignacion - @asignacion.Horario_Fin_Asignacion</td>
-                <td>
-                    <button class="btnSeleccionar">Seleccionar</button>
-                </td>
-            </tr>
+         <tr>
+            <td>@asignacion.Curso_Id.Nombre_Curso</td>
+            <td>@asignacion.Curso_Id.Descripcion_Curso</td>
+            <td>@asignacion.Asistente_Id.Nombre_Usuario @asignacion.Asistente_Id.Apellido_Usuario</td>
+            <td>@asignacion.Dia_Asignacion</td>
+            <td>@asignacion.Horario_Inicio_Asignacion - @asignacion.Horario_Fin_Asignacion</td>
+            <td>
+                <button onclick="guardar1(this)">Seleccionar</button>
+                <button class="btnSeleccionar" data-idasignacion="@asignacion.Id_Asignacion">
+                    INSERTAR
+                </button>
+            </td>
+         </tr>
         }
     </tbody>
 </table>
@@ -48,10 +52,12 @@
             <th>Dias habilitados</th>
             <th>Horario de inicio</th>
             <th>Horario de fin</th>
+            <th>Selection</th>
         </tr>
     </thead>
     <tbody></tbody>
 </table>
+
 @section scripts{
     <script>
         //CONSULTA AJAX PARA EL METODO LISTAR ESTUDIANTES DE MI CONTROLADOR HOME
@@ -65,42 +71,91 @@
                 console.log(datos);
                 const asignaciones = datos.jeason_lista;
                 let tabla = $("#tablaCursos tbody");
-                tabla.empty(); // limpia la tabla por si se vuelve a cargar
+                tabla.empty();
                 asignaciones.forEach(asignacion => {
                     let fila = `<tr>
-                                <td>${asignacion.Id_Asignacion}</td>
-                                <td>${asignacion.Curso_Id.Nombre_Curso}</td>
-                                <td>${asignacion.Asistente_Id.Nombre_Usuario}</td>
-                                <td>${asignacion.Dia_Asignacion}</td>
-                                <td>${asignacion.Horario_Inicio_Asignacion}</td>
-                                <td>${asignacion.Horario_Fin_Asignacion}</td>
+                                    <td>${asignacion.Id_Asignacion}</td>
+                                    <td>${asignacion.Curso_Id.Nombre_Curso}</td>
+                                    <td>${asignacion.Asistente_Id.Nombre_Usuario}</td>
+                                    <td>${asignacion.Dia_Asignacion}</td>
+                                    <td>${asignacion.Horario_Inicio_Asignacion}</td>
+                                    <td>${asignacion.Horario_Fin_Asignacion}</td>
+                                    <td>
+                                        <button class="btnSeleccionar" onclick="guardar2(this)">
+                                        Inscribirse
+                                        </button>
+                                    </td>
                                 </tr> `;
                     tabla.append(fila);
                 });
             }
         });
-        $(document).ready(function () {
-            // Al hacer clic en cualquier botón con clase 'btnSeleccionar'
-            $(document).on('click', '.btnSeleccionar', function () {
-                // Obtenemos la fila (tr) donde se hizo clic
-                let fila = $(this).closest('tr');
 
-                // Obtenemos las celdas (td) de esa fila
-                let celdas = fila.find('td');
+        function guardar1(btn) {
+            let fila = $(btn).closest('tr');
+            let celdas = fila.find('td');
+            let Solicitud_Cursos = {
+                curso: celdas.eq(0).text().trim(),
+                descripcion: celdas.eq(1).text().trim(),
+                asistente: celdas.eq(2).text().trim(),
+                dias: celdas.eq(3).text().trim(),
+                horario: celdas.eq(4).text().trim()
+            };
+            console.log("Datos seleccionados:");
+            console.log(Solicitud_Cursos);
+        }
+        function guardar2(btn) {
+            let fila = $(btn).closest('tr');
+            let celdas = fila.find('td');
+            let Solicitud_Cursos = {
+                Id_Asignacion: celdas.eq(0).text().trim(),
+                descripcion: celdas.eq(1).text().trim(),
+                asistente: celdas.eq(2).text().trim(),
+                dias: celdas.eq(3).text().trim(),
+                horario: celdas.eq(4).text().trim()
+            };
+            console.log("Datos seleccionados:");
+            console.log(Solicitud_Cursos);
+        }
 
-                // Creamos un diccionario con los valores de las celdas
-                let datosFila = {
-                    curso: celdas.eq(0).text().trim(),
-                    descripcion: celdas.eq(1).text().trim(),
-                    asistente: celdas.eq(2).text().trim(),
-                    dias: celdas.eq(3).text().trim(),
-                    horario: celdas.eq(4).text().trim()
-                };
-
-                // Mostramos el diccionario en consola
-                console.log("Datos seleccionados:");
-                console.log(datosFila);
+        $(document).on("click", ".btnSeleccionar", function () {
+            const ids = parseInt($("#idestudiante").val(), 10);
+            const idAsignacion = parseInt($(this).data("idasignacion"), 10);
+            const payload = {
+                Estudiante_Id: { Id_Estudiante: ids },
+                Asignacion_Id: { Id_Asignacion: idAsignacion }
+            };
+            console.log("💾 PAYLOAD a enviar:", payload);
+            $.ajax({
+                url: '@Url.Action("Guardar_Inscripcion", "Home")',
+                type: "POST",
+                data: JSON.stringify(payload),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log("✅ Respuesta del servidor:", data);
+                    if (payload.Id_Inscripcion === 0) {
+                        if (data.resultado !== 0) {
+                            payload.Id_Inscripcion = data.resultado;
+                            console.log("Nuevo Id_Inscripcion ↗", payload.Id_Inscripcion);
+                        } else {
+                            $('#mostrarError').text(data.mensaje).show();
+                        }
+                    } else {
+                        if (data.resultado) {
+                            $("#forModal").modal("hide");
+                        } else {
+                            $('#mostrarError').text(data.mensaje).show();
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("❌ Error en AJAX:", status, error);
+                    console.error("Respuesta completa:", xhr.responseText);
+                    $('#mostrarError').text("Error al registrar").show();
+                }
             });
         });
+
     </script>
 }

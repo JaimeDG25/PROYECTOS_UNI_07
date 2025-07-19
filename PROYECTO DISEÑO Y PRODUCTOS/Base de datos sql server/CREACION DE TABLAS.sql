@@ -51,7 +51,7 @@ CREATE TABLE cursos (
 );
 -- Tabla inscripciones
 CREATE TABLE inscripciones_e_c (
-    Id_Inscripcion INT PRIMARY KEY,
+    Id_Inscripcion INT IDENTITY(1,1) PRIMARY KEY,
     Estudiante_Id INT,
     Asignacion_Id INT,
     Fecha_Inscripcion datetime default getdate(),
@@ -59,6 +59,7 @@ CREATE TABLE inscripciones_e_c (
     FOREIGN KEY (Asignacion_Id) REFERENCES asignacion_d_c(Id_Asignacion)
 );
 select * from inscripciones_e_c
+DROP TABLE inscripciones_e_c 
 sp_help inscripciones_e_c
 -- Tabla asignacion_d_c
 CREATE TABLE asignacion_d_c (

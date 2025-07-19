@@ -1,17 +1,32 @@
-SELECT * FROM inscripciones_e_c
+select * from inscripciones_e_c	
 select * from estudiantes
 select * from asignacion_d_c
-
-SELECT Id_Inscripcion,
-Nombre_Estudiante,Apellido_Estudiante,
-Nombre_Usuario AS Nombre_Asistente,
-Dia_Asignacion,Horario_Inicio_Asignacion,Horario_Fin_Asignacion,
-c.Nombre_Curso,c.Descripcion_Curso
+INSERT INTO inscripciones_e_c (Id_Inscripcion, Estudiante_Id, Asignacion_Id)
+VALUES 
+(8, 8, 38),
+(9, 8, 39),
+(10, 8, 40);
+SELECT 
+    i.Id_Inscripcion,
+    i.Estudiante_Id,
+    e.Nombre_Estudiante,
+    e.Apellido_Estudiante,
+    a.Curso_Id,
+    c.Nombre_Curso,
+	c.Descripcion_Curso,
+    a.Asistente_Id,
+    u.Nombre_Usuario,
+    u.Apellido_Usuario,
+    i.Asignacion_Id,
+    a.Dia_Asignacion,
+    a.Horario_Inicio_Asignacion,
+    a.Horario_Fin_Asignacion
 FROM inscripciones_e_c i
-inner join estudiantes e On e.Id_Estudiante=i.Estudiante_Id
-inner join asignacion_d_c a ON  a.Id_Asignacion=i.Asignacion_Id
+INNER JOIN estudiantes e ON e.Id_Estudiante = i.Estudiante_Id
+INNER JOIN asignacion_d_c a ON a.Id_Asignacion = i.Asignacion_Id
 INNER JOIN cursos c ON c.Id_Curso = a.Curso_Id
-inner join usuarios u ON u.Id_Usuario=a.Asistente_Id
+INNER JOIN usuarios u ON u.Id_Usuario = a.Asistente_Id
+WHERE i.Estudiante_Id = 7;
 
 SELECT 
     i.Id_Inscripcion,
@@ -21,7 +36,7 @@ SELECT
     c.Nombre_Curso,
 	c.Descripcion_Curso,
     u.Nombre_Usuario,
-	i.Asignacion_I,
+	i.Asignacion_Id,
     a.Dia_Asignacion,
     a.Horario_Inicio_Asignacion,
     a.Horario_Fin_Asignacion

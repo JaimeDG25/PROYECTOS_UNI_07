@@ -61,7 +61,6 @@ namespace Diseño_Cliente.Controllers
         }
         public ActionResult Listar_Inscripciones(int estudianteId)
         {
-            int estudianteISd = 8;
             List<Inscripciones_E_C> olista = new List<Inscripciones_E_C>();
             olista = new CN_Inscripcion_E_C().Listar(estudianteId);
             string saludo = "Un saludo de agradecimiento";
@@ -112,6 +111,22 @@ namespace Diseño_Cliente.Controllers
                 return Json("Vaya vaya vaya, algo salio mal", JsonRequestBehavior.AllowGet);
             }
             return Json(new { jeason_lista = olistas, saludo = saludo }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult Guardar_Inscripcion(Inscripciones_E_C registrado) //Ese "registrado" debe ser igual
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (registrado.Id_Inscripcion == 0)
+            {
+                resultado = new CN_Inscripcion_E_C().Registrar(registrado, out mensaje);
+            }
+            else
+            {
+                resultado = null;
+                //resultado = new CN_Usuarios().Editar(registrado, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

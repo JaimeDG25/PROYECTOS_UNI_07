@@ -17,5 +17,19 @@ namespace CapaNegocio
             return objeto_cn_inscripcion_e_c.Listar(estudianteId);
         }
         #endregion
+        #region METODO PARA REGISTRAR ASIGNACION DE DOCENTES A CURSOS EN NEGOCIO
+        public int Registrar(Inscripciones_E_C obj_inscribir_register, out string mensaje_registrar)
+        {
+            mensaje_registrar = string.Empty;
+            if (string.IsNullOrEmpty(mensaje_registrar))
+            {
+                return objeto_cn_inscripcion_e_c.Registrar(obj_inscribir_register, out mensaje_registrar);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        #endregion
     }
 }

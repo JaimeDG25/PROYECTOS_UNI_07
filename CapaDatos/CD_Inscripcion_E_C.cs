@@ -11,7 +11,7 @@ namespace CapaDatos
 {
     public class CD_Inscripcion_E_C
     {
-        #region METODO PARA LISTAR ASIGNACION DE DOCENTES A CURSOS
+        #region METODO PARA LISTAR INSCRIPCIONES DE ESTUDIANTES A CURSOS
         public List<Inscripciones_E_C> Listar(int estudianteId)
         {
             List<Inscripciones_E_C> lista_Inscripciones_E_C = new List<Inscripciones_E_C>();
@@ -20,29 +20,28 @@ namespace CapaDatos
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
                     oconexion.Open();
-
                     Console.WriteLine("Conexión exitosa a la base de datos.");
                     String query = @"SELECT 
-    i.Id_Inscripcion,
-    i.Estudiante_Id,
-    e.Nombre_Estudiante,
-    e.Apellido_Estudiante,
-    a.Curso_Id,
-    c.Nombre_Curso,
-	c.Descripcion_Curso,
-    a.Asistente_Id,
-    u.Nombre_Usuario,
-    u.Apellido_Usuario,
-    i.Asignacion_Id,
-    a.Dia_Asignacion,
-    a.Horario_Inicio_Asignacion,
-    a.Horario_Fin_Asignacion
-FROM inscripciones_e_c i
-INNER JOIN estudiantes e ON e.Id_Estudiante = i.Estudiante_Id
-INNER JOIN asignacion_d_c a ON a.Id_Asignacion = i.Asignacion_Id
-INNER JOIN cursos c ON c.Id_Curso = a.Curso_Id
-INNER JOIN usuarios u ON u.Id_Usuario = a.Asistente_Id
-WHERE i.Estudiante_Id = @EstudianteId;";
+                                    i.Id_Inscripcion,
+                                    i.Estudiante_Id,
+                                    e.Nombre_Estudiante,
+                                    e.Apellido_Estudiante,
+                                    a.Curso_Id,
+                                    c.Nombre_Curso,
+	                                c.Descripcion_Curso,
+                                    a.Asistente_Id,
+                                    u.Nombre_Usuario,
+                                    u.Apellido_Usuario,
+                                    i.Asignacion_Id,
+                                    a.Dia_Asignacion,
+                                    a.Horario_Inicio_Asignacion,
+                                    a.Horario_Fin_Asignacion
+                                FROM inscripciones_e_c i
+                                INNER JOIN estudiantes e ON e.Id_Estudiante = i.Estudiante_Id
+                                INNER JOIN asignacion_d_c a ON a.Id_Asignacion = i.Asignacion_Id
+                                INNER JOIN cursos c ON c.Id_Curso = a.Curso_Id
+                                INNER JOIN usuarios u ON u.Id_Usuario = a.Asistente_Id
+                                WHERE i.Estudiante_Id = @EstudianteId;";
 
                     SqlCommand cmd = new SqlCommand(query, oconexion);
                     cmd.CommandType = CommandType.Text;
@@ -98,6 +97,38 @@ WHERE i.Estudiante_Id = @EstudianteId;";
                 Console.WriteLine("Error en ListarCursos: " + ex.Message);
             }
             return lista_Inscripciones_E_C;
+        }
+        #endregion
+
+        #region METODO PARA REGISTRAR INSCRIPCIONES DE ESTUDIANTES A CURSOS
+        public int Registrar(Inscripciones_E_C obj, out string mensaje_registrar)
+        {
+            int idautogenerado = 0;
+            mensaje_registrar = string.Empty;
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarInscripcion_E_C", oconexion);
+                    cmd.Parameters.AddWithValue("Estudiante_Id",
+                        obj.Estudiante_Id != null ? obj.Estudiante_Id.Id_Estudiante : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("Asignacion_Id",
+                        obj.Asignacion_Id != null ? obj.Asignacion_Id.Id_Asignacion : (object)DBNull.Value);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    oconexion.Open();
+                    cmd.ExecuteNonQuery();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    mensaje_registrar = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                idautogenerado = 0;
+                mensaje_registrar = ex.Message;
+            }
+            return idautogenerado;
         }
         #endregion
     }
